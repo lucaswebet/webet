@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+# Photos des biens : jamais versionnées (droits d'auteur / vie privée)
+data/properties/*/photos/
+data/properties/*/output/
+!data/properties/.gitkeep
