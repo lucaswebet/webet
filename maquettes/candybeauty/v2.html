@@ -294,7 +294,7 @@ p{margin:0}
 .note svg{width:16px;height:16px;flex:none;margin-top:3px}
 
 /* Fiche produit */
-.pdp{display:grid;gap:2rem;padding-block:1rem 3rem}
+.pdp{display:grid;grid-template-columns:minmax(0,1fr);gap:2rem;padding-block:1rem 3rem}
 @media (min-width:960px){.pdp{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:2.5rem;align-items:start}}
 .gal{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
 .gal .main{grid-column:1/-1;position:relative;border-radius:28px;background:var(--tint,var(--t-pink));padding:8%;aspect-ratio:1.15}
@@ -305,11 +305,11 @@ p{margin:0}
 .gal .sub.txt{background:var(--lemon);display:grid;place-items:center;text-align:center;padding:1rem;font-family:var(--display);font-size:clamp(1.4rem,3vw,2rem);line-height:1.05}
 @media (max-width:959px){.gal .sub{display:none}}
 .gal .sub.txt small{display:block;font-family:var(--body);font-size:.85rem;margin-top:.4rem;color:var(--ink)}
-.panel{background:var(--blush);border-radius:30px;padding:clamp(1.1rem,3vw,1.8rem);display:grid;gap:1.2rem}
+.panel{background:var(--blush);border-radius:30px;padding:clamp(1.1rem,3vw,1.8rem);display:grid;grid-template-columns:minmax(0,1fr);gap:1.2rem;min-width:0}
 @media (min-width:960px){.panel{position:sticky;top:96px}}
 .panel h1{font-size:clamp(2.3rem,5vw,3.4rem)}
 .panel .badges{position:static}
-.steps{display:grid;gap:1rem}
+.steps{display:grid;grid-template-columns:minmax(0,1fr);gap:1rem}
 .step{background:#fff;border-radius:22px;padding:1rem}
 .step h2{font-size:1.15rem;display:flex;gap:.55rem;align-items:center;margin-bottom:.7rem}
 .sibs{display:grid;grid-auto-flow:column;grid-auto-columns:84px;gap:.55rem;overflow-x:auto;padding-bottom:.3rem;scrollbar-width:thin}
