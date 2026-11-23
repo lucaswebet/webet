@@ -1,0 +1,1140 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>CandyBeauty Refonte V2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Maquette interactive de refonte CandyBeauty, version 2 (concept de démonstration).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Questrial&display=swap">
+<style>
+/* V2 : énergie « confiserie pop ». Grandes bandes roses à bords courbes, typo display ronde et grasse,
+   cartes produit sur fonds acidulés, autocollants inclinés. Base : le rose CandyBeauty, un jaune citron en second. */
+:root{
+  color-scheme: light;
+  --pink:#FC7EB7;        /* rose CandyBeauty */
+  --hot:#D81B60;         /* rose vif, dérivé du thème actuel */
+  --berry:#880E4F;
+  --lemon:#FFE45C;
+  --blush:#FFF0F9;
+  --ink:#2B2A2A;
+  --muted:#6B5A63;
+  --line:#F3D2E3;
+  --paper:#FFFFFF;
+  --ok:#1D7A50;
+  --t-pink:#FFD3E8; --t-lemon:#FFF2A8; --t-mint:#C8F1E0; --t-peach:#FFD9BF; --t-lilac:#E4D9FF; --t-sky:#CDEBFF;
+  --display:"Lilita One", "Arial Rounded MT Bold", "Arial Black", system-ui, sans-serif;
+  --body:"Questrial", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --r:24px; --pill:999px;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --gut-l:max(16px, env(safe-area-inset-left, 0px));
+  --gut-r:max(16px, env(safe-area-inset-right, 0px));
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--paper)}
+img{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.02;margin:0;text-wrap:balance;letter-spacing:.005em}
+p{margin:0}
+:focus-visible{outline:3px solid var(--berry);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1280px;margin-inline:auto;padding-left:var(--gut-l);padding-right:var(--gut-r)}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip:focus{position:fixed!important;width:auto!important;height:auto!important;clip:auto!important;top:8px;left:8px;z-index:100;background:var(--ink);color:#fff;padding:.6em 1em;border-radius:12px;border:0}
+.ico{width:22px;height:22px;flex:none}
+.hl{background:var(--lemon);color:var(--ink);padding:0 .18em;border-radius:.25em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.hl-pink{color:var(--hot)}
+.sticker{display:inline-flex;align-items:center;gap:.4em;background:#fff;color:var(--ink);font-family:var(--display);font-size:1rem;padding:.35em .9em;border-radius:var(--pill);box-shadow:0 6px 0 -1px #0000001a;transform:rotate(-3deg)}
+.tag-idea{display:inline-flex;align-items:center;gap:.4em;background:var(--ink);color:#fff;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;padding:.35em .8em;border-radius:var(--pill)}
+
+/* Boutons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:50px;padding:.7em 1.6em;border-radius:var(--pill);border:2.5px solid transparent;font-family:var(--display);font-size:1.12rem;letter-spacing:.01em;text-decoration:none;cursor:pointer;transition:transform .2s var(--ease),background .2s,color .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(1px)}
+.btn-hot{background:var(--hot);color:#fff;box-shadow:0 5px 0 var(--berry)}
+.btn-hot:hover{box-shadow:0 7px 0 var(--berry)}
+.btn-lemon{background:var(--lemon);color:var(--ink);box-shadow:0 5px 0 #c9a800}
+.btn-lemon:hover{box-shadow:0 7px 0 #c9a800}
+.btn-line{background:#fff;color:var(--hot);border-color:var(--hot)}
+.btn-white{background:transparent;color:#fff;border-color:#fff}
+.btn-white:hover{background:#fff;color:var(--hot)}
+.btn[disabled]{background:#EEE6EA;color:#7d7176;cursor:not-allowed;box-shadow:none;transform:none}
+.icon-btn{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;border:0;background:transparent;cursor:pointer;position:relative;transition:background .2s}
+.icon-btn:hover{background:var(--blush)}
+
+/* Bandeau démo + annonces */
+.demo-strip{background:var(--ink);color:#fff;font-size:.78rem}
+.demo-strip .wrap{display:flex;gap:.75rem;align-items:center;justify-content:space-between;padding-block:.4rem}
+.demo-strip button{white-space:nowrap;background:transparent;border:1px solid #ffffff66;color:#fff;border-radius:var(--pill);padding:.25em .9em;font-size:.76rem;cursor:pointer;min-height:32px}
+@media (max-width:640px){.demo-strip .long{display:none}.demo-strip .wrap{font-size:.72rem;line-height:1.3}}
+.annonce{background:var(--hot);color:#fff;font-family:var(--display);font-size:1rem;letter-spacing:.02em;overflow:hidden}
+.annonce .track{display:flex;gap:3rem;justify-content:center;align-items:center;min-height:40px;padding-inline:1rem;white-space:nowrap}
+.annonce span{display:inline-flex;align-items:center;gap:.5rem}
+.annonce svg{width:18px;height:18px}
+@media (max-width:700px){.annonce .track{justify-content:flex-start;animation:marquee 16s linear infinite;width:max-content}.annonce .dup{display:inline-flex!important}}
+.annonce .dup{display:none}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* En-tête */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;padding-block:.6rem}
+.hdr .bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:.5rem;background:#fffffff2;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:22px;padding:.35rem .5rem;box-shadow:0 8px 24px -16px #880e4f66;border:1px solid var(--line)}
+.hdr-left,.hdr-right{display:flex;align-items:center;gap:.2rem}
+.hdr-right{justify-content:flex-end}
+.logo{justify-self:center;text-decoration:none;display:inline-flex;align-items:center;gap:.35rem}
+.logo span{font-family:var(--display);font-size:1.75rem;line-height:1;color:var(--hot);-webkit-text-stroke:0;letter-spacing:.01em;text-shadow:2px 2px 0 var(--lemon)}
+.logo svg{width:30px;height:30px;transform:rotate(-20deg)}
+.navlink{display:none;align-items:center;gap:.3rem;min-height:44px;padding:0 .9rem;border-radius:var(--pill);border:0;background:transparent;cursor:pointer;font-family:var(--display);font-size:1.05rem;text-decoration:none;color:var(--ink)}
+.navlink:hover,.navlink[aria-expanded="true"]{background:var(--blush);color:var(--hot)}
+.navlink svg{width:16px;height:16px;transition:transform .25s}
+.navlink[aria-expanded="true"] svg{transform:rotate(180deg)}
+@media (min-width:1000px){.navlink{display:inline-flex}.menu-btn{display:none}}
+.count{position:absolute;top:2px;right:0;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--hot);color:#fff;font-size:.72rem;display:grid;place-items:center;font-family:var(--display)}
+.count.bump{animation:bump .5s var(--ease)}
+@keyframes bump{40%{transform:scale(1.4)}}
+
+/* Méga-menu « Nos bonbons » */
+.mega{position:absolute;left:0;right:0;top:calc(100% - .2rem);padding-left:var(--gut-l);padding-right:var(--gut-r)}
+.mega-in{max-width:1280px;margin-inline:auto;background:#fff;border-radius:26px;border:1px solid var(--line);box-shadow:0 30px 60px -30px #880e4f80;padding:1.4rem;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;animation:pop .25s var(--ease)}
+@keyframes pop{from{opacity:0;transform:translateY(-8px)}}
+.mega a{display:grid;grid-template-columns:72px 1fr;gap:.8rem;align-items:center;text-decoration:none;border-radius:18px;padding:.5rem;transition:background .2s}
+.mega a:hover{background:var(--blush)}
+.mega img{width:72px;height:72px;border-radius:18px;object-fit:cover}
+.mega strong{font-family:var(--display);font-weight:400;font-size:1.15rem;display:block;line-height:1.1}
+.mega small{color:var(--muted);font-size:.82rem;line-height:1.3;display:block}
+.mega .all{grid-column:1/-1;justify-self:center}
+
+/* Courbes de section */
+.curve{display:block;width:100%;height:clamp(28px,5vw,70px)}
+.curve path{fill:currentColor}
+.c-hot{color:var(--hot)} .c-white{color:#fff} .c-blush{color:var(--blush)} .c-lemon{color:var(--lemon)}
+
+/* Hero */
+.hero{background:var(--hot);color:#fff;position:relative;overflow:hidden;margin-top:-76px;padding-top:76px}
+.hero .wrap{display:grid;gap:2rem;padding-block:2rem 1rem;align-items:center;position:relative;z-index:1}
+.hero h1{font-size:clamp(3rem,10vw,6.2rem);line-height:.95}
+.hero .lede{font-size:1.15rem;max-width:36ch;margin-top:1rem;color:#ffe3ef}
+.hero-cta{display:flex;flex-wrap:wrap;gap:.9rem;margin-top:1.6rem}
+.stage{position:relative;min-height:340px;max-width:560px;width:100%;justify-self:center;aspect-ratio:1.1}
+.blob{position:absolute;overflow:hidden;border:6px solid #fff;box-shadow:0 26px 40px -24px #0000008c;transition:transform .5s var(--ease)}
+.blob img{width:100%;height:100%;object-fit:cover}
+.b1{width:52%;aspect-ratio:1;left:4%;top:6%;border-radius:46% 54% 42% 58%/55% 45% 55% 45%;transform:rotate(-6deg)}
+.b2{width:46%;aspect-ratio:1;right:2%;top:0;border-radius:60% 40% 55% 45%/45% 60% 40% 55%;transform:rotate(7deg)}
+.b3{width:44%;aspect-ratio:1;left:30%;bottom:0;border-radius:50% 50% 45% 55%/60% 40% 60% 40%;transform:rotate(-2deg)}
+.stage:hover .b1{transform:rotate(-9deg) translate(-6px,-4px)}
+.stage:hover .b2{transform:rotate(10deg) translate(6px,-6px)}
+.stage:hover .b3{transform:rotate(1deg) translateY(4px)}
+.stage .sticker{position:absolute;z-index:2;font-size:1.15rem}
+.s1{left:0;top:52%;transform:rotate(-8deg)!important}
+.s2{right:0;top:44%;transform:rotate(6deg)!important;background:var(--lemon)!important}
+.s3{left:50%;bottom:-2%;transform:rotate(-4deg)!important;background:var(--ink)!important;color:#fff!important}
+.float{position:absolute;pointer-events:none;opacity:.9;animation:float 6s ease-in-out infinite}
+.float.blur{filter:blur(3px);opacity:.6}
+@keyframes float{50%{transform:translateY(-14px) rotate(8deg)}}
+@media (min-width:920px){.hero .wrap{grid-template-columns:1fr 1fr;padding-block:3rem 1.5rem}}
+@media (max-width:480px){.stage{min-height:300px}.stage .sticker{font-size:.95rem}}
+@media (max-width:700px){.float{display:none}}
+
+/* Titres de section */
+.sec{padding-block:3.5rem}
+.sec-title{text-align:center;display:grid;justify-items:center;gap:.6rem;margin-bottom:2rem;position:relative}
+.sec-title h2{font-size:clamp(2.2rem,6vw,3.6rem)}
+.sec-title p{color:var(--muted);max-width:56ch}
+.bubble{position:absolute;right:max(0px,calc(50% - 420px));top:-1.4rem;background:var(--lemon);color:var(--ink);font-family:var(--display);font-size:1.05rem;line-height:1.05;padding:.7rem 1rem;border-radius:50%;transform:rotate(10deg);text-align:center;box-shadow:0 6px 0 #c9a800}
+@media (max-width:700px){.bubble{display:none}}
+
+/* Cartes produit (fonds acidulés) */
+.rail-wrap{position:relative}
+.rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,280px);gap:1.1rem;overflow-x:auto;scroll-snap-type:x mandatory;padding:.4rem .2rem 1.2rem;scrollbar-width:none}
+.rail::-webkit-scrollbar{display:none}
+.rail>*{scroll-snap-align:start}
+.rail-nav{display:flex;gap:.6rem;justify-content:center;margin-top:.4rem}
+.rail-nav button{width:48px;height:48px;border-radius:50%;border:2.5px solid var(--hot);background:#fff;color:var(--hot);display:grid;place-items:center;cursor:pointer;transition:background .2s,color .2s}
+.rail-nav button:hover{background:var(--hot);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.8rem,2vw,1.4rem)}
+@media (min-width:760px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (min-width:1100px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.card{position:relative;display:flex;flex-direction:column;gap:.55rem}
+.card-media{position:relative;display:block;border-radius:var(--r);background:var(--tint,var(--t-pink));padding:12%;aspect-ratio:1;overflow:hidden;transition:transform .35s var(--ease)}
+.card-media img{width:100%;height:100%;object-fit:cover;border-radius:18px;transform:rotate(var(--rot,-3deg));box-shadow:0 14px 24px -14px #0000007a;transition:transform .45s var(--ease)}
+.card:hover .card-media img{transform:rotate(0deg) scale(1.06)}
+.card.soldout .card-media img{filter:grayscale(.5);opacity:.85}
+.badges{position:absolute;top:.7rem;left:.7rem;right:.7rem;display:flex;flex-wrap:wrap;gap:.3rem;z-index:1;pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:.3em;background:var(--ink);color:#fff;font-size:.72rem;font-weight:700;padding:.3em .65em;border-radius:8px;line-height:1.2}
+.badge svg{width:14px;height:14px}
+.badge.lisse,.badge.sucre{background:#fff;color:var(--ink)}
+.badge.halal{background:var(--berry)}
+.badge.out{background:#5b5357}
+.badge.promo{background:var(--hot)}
+.badge.new{background:var(--lemon);color:var(--ink)}
+.badge.veg{background:#fff;color:var(--ok)}
+.card h3{font-size:1.3rem;line-height:1.1}
+.card h3 a{text-decoration:none}
+.card h3 a:hover{color:var(--hot)}
+.fmt{font-size:.82rem;color:var(--muted);margin-top:-.2rem}
+.price{font-family:var(--display);font-size:1.2rem;font-variant-numeric:tabular-nums}
+.price s{font-family:var(--body);font-size:.8em;color:var(--muted);margin-left:.35em}
+.card .price small{font-family:var(--body);font-size:.8rem;color:var(--muted)}
+.add{display:flex;align-items:center;justify-content:center;gap:.4em;width:100%;min-height:44px;border:0;border-radius:14px;background:var(--hot);color:#fff;font-family:var(--display);font-size:1.02rem;cursor:pointer;text-decoration:none;transition:background .2s,transform .2s}
+.add:hover{background:var(--berry)}
+.add:active{transform:scale(.98)}
+.add.done{background:var(--ok)}
+.add[disabled]{background:#F6DCE8;color:#9b7f8c;cursor:not-allowed}
+.add svg{width:18px;height:18px}
+
+/* Bande « assortiment » */
+.band-hot{background:var(--hot);color:#fff;position:relative;overflow:hidden}
+.band-hot .wrap{display:grid;gap:2rem;align-items:center;padding-block:2.5rem}
+@media (min-width:900px){.band-hot .wrap{grid-template-columns:1fr 1fr}}
+.band-hot h2{font-size:clamp(2.3rem,6vw,3.8rem)}
+.feat{display:grid;grid-template-columns:1fr 1fr;gap:1rem 1.2rem;background:#fff;color:var(--ink);border-radius:var(--r);padding:1.2rem;margin-block:1.4rem}
+.feat li{list-style:none;display:flex;gap:.6rem;align-items:flex-start;font-weight:700;font-size:.92rem;line-height:1.3}
+.feat svg{width:28px;height:28px;flex:none;color:var(--hot)}
+.feat{padding-left:1.2rem}
+.basket{position:relative;border-radius:32px;background:var(--t-pink);aspect-ratio:1.1;overflow:hidden;display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;padding:1.2rem;align-content:center}
+.basket img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:16px;border:4px solid #fff;box-shadow:0 12px 20px -12px #0007}
+.basket img:nth-child(odd){transform:rotate(-4deg) translateY(6px)}
+.basket img:nth-child(even){transform:rotate(4deg)}
+
+/* Bloc « tout ce qu'il faut » autour d'une image */
+.around{display:grid;gap:1.6rem;align-items:center}
+@media (min-width:980px){.around{grid-template-columns:1fr 1.05fr 1fr}}
+.around-col{display:grid;gap:1.6rem}
+.pt{display:flex;gap:1rem;align-items:center}
+.pt svg{width:68px;height:68px;flex:none;padding:14px;border-radius:20px;background:var(--blush);color:var(--hot);box-shadow:0 6px 0 var(--line)}
+.pt h3{font-size:1.45rem}
+.pt p{color:var(--muted);font-size:.93rem;line-height:1.4}
+@media (min-width:980px){.around-col.l .pt{flex-direction:row-reverse;text-align:right}}
+.around-img{border-radius:32px;overflow:hidden;aspect-ratio:4/5;max-width:400px;justify-self:center;width:100%;position:relative;background:var(--t-lemon)}
+.around-img img{width:100%;height:100%;object-fit:cover}
+.around-img .sticker{position:absolute;left:1rem;bottom:1rem}
+
+/* Rayons inclinés */
+.band-blush{background:var(--blush)}
+.tilts{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(220px,260px);gap:1.2rem;overflow-x:auto;padding:1.2rem .4rem 2rem;scroll-snap-type:x mandatory;scrollbar-width:none}
+.tilts::-webkit-scrollbar{display:none}
+.tilt{scroll-snap-align:center;background:#fff;border-radius:26px;padding:.8rem .8rem 1.1rem;text-decoration:none;display:grid;gap:.7rem;box-shadow:0 18px 30px -22px #880e4f80;transform:rotate(var(--r,-2deg));transition:transform .3s var(--ease)}
+.tilt:hover{transform:rotate(0) translateY(-6px)}
+.tilt img{border-radius:18px;aspect-ratio:1;object-fit:cover;width:100%}
+.tilt strong{font-family:var(--display);font-weight:400;font-size:1.4rem;line-height:1.05;padding-inline:.3rem}
+.tilt span{font-size:.85rem;color:var(--muted);padding-inline:.3rem;line-height:1.35}
+@media (min-width:1180px){.tilts{grid-auto-flow:row;grid-template-columns:repeat(4,1fr);overflow:visible}}
+
+/* Box */
+.boxfeat{display:grid;gap:2rem;align-items:center;background:var(--lemon);border-radius:36px;padding:clamp(1.2rem,4vw,2.6rem);position:relative;overflow:hidden}
+@media (min-width:860px){.boxfeat{grid-template-columns:.9fr 1.1fr}}
+.boxfeat img{border-radius:26px;width:100%;max-width:340px;justify-self:center;aspect-ratio:4/5;object-fit:cover;background:#fff;transform:rotate(-3deg);border:6px solid #fff}
+.boxfeat h2{font-size:clamp(2.1rem,5vw,3.2rem)}
+.seg{display:flex;flex-wrap:wrap;gap:.5rem;border:0;padding:0;margin:0}
+.seg legend{font-family:var(--display);font-size:1.1rem;margin-bottom:.5rem;padding:0;display:flex;align-items:center;gap:.5rem}
+.seg label{position:relative}
+.seg input{position:absolute;opacity:0;inset:0}
+.seg label>span{display:inline-grid;place-items:center;min-width:74px;min-height:52px;padding:.4rem 1rem;border-radius:16px;border:2.5px solid #fff;background:#fff;font-family:var(--display);font-size:1.08rem;cursor:pointer;transition:all .2s}
+.seg input:checked+span{border-color:var(--hot);color:var(--hot);box-shadow:0 4px 0 var(--hot)}
+.seg input:focus-visible+span{outline:3px solid var(--berry);outline-offset:3px}
+.seg input:disabled+span{opacity:.45;text-decoration:line-through;cursor:not-allowed}
+.step-n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--lemon);color:var(--ink);font-family:var(--display);font-size:1rem}
+.unit{font-size:.85rem;color:var(--muted)}
+.boxfeat .step-n{background:#fff}
+
+/* Réassurance avec séparateurs bonbons */
+.reassure{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.6rem 1rem;padding:0;margin:0;text-align:center}
+.reassure li{list-style:none;display:grid;justify-items:center;gap:.3rem;position:relative}
+.reassure svg.ri{width:40px;height:40px;color:var(--hot)}
+.reassure strong{font-family:var(--display);font-weight:400;color:var(--hot);font-size:1.3rem;line-height:1.05}
+.reassure span{font-family:var(--display);font-size:1.1rem;line-height:1.1}
+.reassure .sep{display:none}
+@media (min-width:980px){.reassure{grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:center}.reassure .sep{display:block;width:26px;height:26px;color:var(--pink)}}
+
+/* Vrac 100 g */
+.vrac{display:grid;gap:2rem;align-items:center}
+@media (min-width:900px){.vrac{grid-template-columns:1fr 1fr}}
+.vrac-img{position:relative;border-radius:32px;overflow:hidden;aspect-ratio:5/4}
+.vrac-img img{width:100%;height:100%;object-fit:cover}
+.big100{position:absolute;right:1rem;bottom:.5rem;font-family:var(--display);font-size:clamp(4.5rem,12vw,8rem);line-height:.85;color:#fff;text-shadow:4px 4px 0 var(--hot)}
+.vrac h2{font-size:clamp(2.2rem,5vw,3.2rem)}
+.formats{display:grid;gap:.7rem;margin:1.3rem 0 0;padding:0}
+.formats li{list-style:none;display:grid;grid-template-columns:52px 1fr;gap:.8rem;align-items:center;background:var(--blush);border-radius:18px;padding:.75rem 1rem}
+.formats svg{width:46px;height:46px;color:var(--hot)}
+.formats strong{font-family:var(--display);font-weight:400;font-size:1.2rem;display:block;line-height:1.1}
+.formats span{font-size:.9rem;color:var(--muted)}
+
+/* Collection */
+.coll-hero{background:var(--hot);color:#fff;margin-top:-76px;padding-top:76px;position:relative;overflow:hidden}
+.coll-hero .wrap{padding-block:2rem .5rem;display:grid;gap:.8rem;justify-items:center;text-align:center;position:relative;z-index:1}
+.coll-hero h1{font-size:clamp(2.6rem,8vw,4.8rem)}
+.coll-hero p{color:#ffe3ef;max-width:60ch}
+.crumbs{font-size:.85rem;display:flex;gap:.4rem;flex-wrap:wrap;opacity:.9}
+.crumbs a{text-decoration:none}
+.crumbs a:hover{text-decoration:underline}
+.chips{display:flex;gap:.5rem;overflow-x:auto;padding:.3rem .1rem .6rem;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;display:inline-flex;align-items:center;gap:.4em;min-height:44px;padding:.4em 1.05em;border-radius:var(--pill);border:2px solid var(--line);background:#fff;text-decoration:none;font-family:var(--display);font-size:1.02rem;cursor:pointer;white-space:nowrap;transition:all .2s;color:var(--ink)}
+.chip:hover{border-color:var(--pink)}
+.chip[aria-current="page"],.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip svg{width:18px;height:18px}
+.coll-hero .chips{justify-content:center;flex-wrap:wrap;overflow:visible}
+.coll-hero .chip{border-color:#ffffff66;background:transparent;color:#fff}
+.coll-hero .chip[aria-current="page"]{background:#fff;color:var(--hot);border-color:#fff}
+.toolbar{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between;padding-block:1.2rem;margin-bottom:.6rem}
+.toolbar .chips{padding:0}
+.sort{display:flex;align-items:center;gap:.5rem;font-size:.9rem;color:var(--muted)}
+.sort select{min-height:44px;border-radius:var(--pill);border:2px solid var(--line);padding:0 2.2rem 0 1rem;font:inherit;color:var(--ink);background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6' fill='none' stroke='%232B2A2A' stroke-width='2'/%3E%3C/svg%3E") no-repeat right .8rem center/16px;appearance:none;cursor:pointer}
+.result-count{font-size:.9rem;color:var(--muted);width:100%}
+@media (min-width:760px){.result-count{width:auto}}
+.empty{text-align:center;padding:3rem 1rem;display:grid;gap:1rem;justify-items:center;border:2.5px dashed var(--line);border-radius:var(--r)}
+.empty svg{width:68px;height:68px;color:var(--pink)}
+.note{font-size:.82rem;color:var(--muted);margin-top:2rem;display:flex;gap:.5rem;align-items:flex-start}
+.note svg{width:16px;height:16px;flex:none;margin-top:3px}
+
+/* Fiche produit */
+.pdp{display:grid;gap:2rem;padding-block:1rem 3rem}
+@media (min-width:960px){.pdp{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:2.5rem;align-items:start}}
+.gal{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.gal .main{grid-column:1/-1;position:relative;border-radius:28px;background:var(--tint,var(--t-pink));padding:8%;aspect-ratio:1.15}
+.gal .main img{width:100%;height:100%;object-fit:cover;border-radius:22px;box-shadow:0 20px 30px -20px #0008}
+.gal .sub{border-radius:22px;aspect-ratio:1;overflow:hidden;position:relative}
+.gal .sub img{width:100%;height:100%;object-fit:cover}
+.gal .sub.zoom img{transform:scale(1.8);transform-origin:30% 40%}
+.gal .sub.txt{background:var(--lemon);display:grid;place-items:center;text-align:center;padding:1rem;font-family:var(--display);font-size:clamp(1.4rem,3vw,2rem);line-height:1.05}
+@media (max-width:959px){.gal .sub{display:none}}
+.gal .sub.txt small{display:block;font-family:var(--body);font-size:.85rem;margin-top:.4rem;color:var(--ink)}
+.panel{background:var(--blush);border-radius:30px;padding:clamp(1.1rem,3vw,1.8rem);display:grid;gap:1.2rem}
+@media (min-width:960px){.panel{position:sticky;top:96px}}
+.panel h1{font-size:clamp(2.3rem,5vw,3.4rem)}
+.panel .badges{position:static}
+.steps{display:grid;gap:1rem}
+.step{background:#fff;border-radius:22px;padding:1rem}
+.step h2{font-size:1.15rem;display:flex;gap:.55rem;align-items:center;margin-bottom:.7rem}
+.sibs{display:grid;grid-auto-flow:column;grid-auto-columns:84px;gap:.55rem;overflow-x:auto;padding-bottom:.3rem;scrollbar-width:thin}
+.sib{text-decoration:none;display:grid;gap:.3rem;font-size:.72rem;line-height:1.15;text-align:center;color:var(--muted)}
+.sib img{width:84px;height:84px;object-fit:cover;border-radius:16px;border:3px solid transparent}
+.sib[aria-current="page"] img{border-color:var(--hot)}
+.sib[aria-current="page"]{color:var(--ink);font-weight:700}
+.qty{display:inline-flex;align-items:center;border:2.5px solid var(--line);border-radius:var(--pill);min-height:52px;background:#fff}
+.qty button{width:46px;height:48px;border:0;background:transparent;cursor:pointer;display:grid;place-items:center;border-radius:50%}
+.qty button:hover{background:var(--blush)}
+.qty output,.qty span{min-width:2.2em;text-align:center;font-family:var(--display);font-size:1.15rem;font-variant-numeric:tabular-nums}
+.buybtn{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:60px;border:0;border-radius:18px;background:var(--hot);color:#fff;font-family:var(--display);font-size:1.3rem;padding:0 1.3rem;cursor:pointer;box-shadow:0 5px 0 var(--berry);transition:transform .2s,box-shadow .2s}
+.buybtn:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--berry)}
+.buybtn[disabled]{background:#EEE6EA;color:#7d7176;box-shadow:none;cursor:not-allowed;transform:none}
+.perkg{font-size:.82rem;color:var(--muted);text-align:right;margin-top:.4rem}
+.stock{display:inline-flex;align-items:center;gap:.45em;font-size:.9rem}
+.stock::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px #1d7a5026}
+.stock.out::before{background:#9a8c93;box-shadow:none}
+.perks{display:grid;gap:.5rem;padding:0;margin:0}
+.perks li{list-style:none;display:flex;gap:.6rem;align-items:center;font-size:.92rem}
+.perks svg{width:22px;height:22px;color:var(--hot);flex:none}
+.recipe{background:var(--hot);color:#fff;border-radius:36px;padding:clamp(1.3rem,4vw,2.6rem);display:grid;gap:1.4rem;position:relative;overflow:hidden;margin-top:1rem}
+.recipe h2{font-size:clamp(2.2rem,5vw,3.2rem);text-align:center}
+.recipe-in{display:grid;gap:1.2rem}
+@media (min-width:860px){.recipe-in{grid-template-columns:.8fr 1.2fr;align-items:start}}
+.recipe-card{background:var(--lemon);color:var(--ink);border-radius:26px;padding:1.2rem;display:grid;gap:.8rem}
+.recipe-card h3{font-size:1.6rem}
+.recipe-card img{border-radius:18px;aspect-ratio:4/3;object-fit:cover;width:100%}
+.recipe-txt h3{font-size:1.3rem;margin-bottom:.5rem}
+.recipe-txt p{color:#fff3f8;font-size:.98rem}
+.recipe-txt .src{color:#fff;font-size:.85rem;margin-top:.9rem;display:inline-block}
+.buybar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#fff;border-top:1px solid var(--line);padding:.6rem var(--gut-r) calc(.6rem + env(safe-area-inset-bottom,0px)) var(--gut-l);display:flex;gap:.75rem;align-items:center;transform:translateY(110%);visibility:hidden;transition:transform .3s var(--ease),visibility .3s;box-shadow:0 -10px 30px -20px #0004}
+.buybar.show{transform:none;visibility:visible}
+.buybar .buybtn{min-height:52px;font-size:1.1rem;flex:1}
+.buybar .bb-name{font-size:.82rem;color:var(--muted);line-height:1.2;max-width:38%}
+@media (min-width:960px){.buybar{display:none}}
+
+/* Assortiment (proposition) */
+.builder{display:grid;gap:1.5rem}
+@media (min-width:980px){.builder{grid-template-columns:1fr 340px;align-items:start}}
+.pickgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}
+@media (min-width:700px){.pickgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.pk{border-radius:22px;overflow:hidden;background:var(--tint,var(--t-pink));display:flex;flex-direction:column;padding:.6rem;gap:.5rem;transition:box-shadow .2s}
+.pk img{aspect-ratio:1;object-fit:cover;width:100%;border-radius:16px}
+.pk-b{display:grid;gap:.4rem;padding:0 .2rem .2rem}
+.pk-b strong{font-family:var(--display);font-weight:400;font-size:1.1rem;line-height:1.1}
+.pk .qty{min-height:44px;justify-self:start}
+.pk .qty button{width:42px;height:42px}
+.pk.on{box-shadow:0 0 0 3px var(--hot)}
+.summary{position:sticky;top:96px;background:var(--hot);color:#fff;border-radius:28px;padding:1.4rem;display:grid;gap:.9rem}
+.summary h2{font-size:1.8rem}
+.jar{display:flex;flex-wrap:wrap;gap:.35rem;min-height:60px;align-content:flex-start;background:#ffffff26;border-radius:18px;padding:.6rem}
+.jar img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid #fff;animation:drop .4s var(--ease)}
+.jar p{color:#ffe3ef;font-size:.88rem}
+@keyframes drop{from{transform:translateY(-14px);opacity:0}}
+.sum-line{display:flex;justify-content:space-between;font-family:var(--display);font-size:1.15rem}
+
+/* Tiroirs, recherche, panier */
+.scrim{position:fixed;inset:0;background:#2b2a2a73;z-index:70;opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim.show{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;bottom:0;z-index:80;background:#fff;width:min(440px,100%);display:flex;flex-direction:column;transition:transform .35s var(--ease);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.drawer.right{right:0;transform:translateX(105%);padding-right:env(safe-area-inset-right,0px);border-radius:28px 0 0 28px}
+.drawer.left{left:0;transform:translateX(-105%);width:min(370px,92%);padding-left:env(safe-area-inset-left,0px);border-radius:0 28px 28px 0}
+.drawer.open{transform:none}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.2rem;border-bottom:1px solid var(--line)}
+.drawer-head h2{font-size:1.8rem}
+.drawer-body{flex:1;overflow-y:auto;padding:1rem 1.2rem}
+.drawer-foot{border-top:1px solid var(--line);padding:1rem 1.2rem;display:grid;gap:.7rem;background:#fff}
+.offers{display:grid;gap:.5rem;padding:.8rem 1.2rem;background:var(--blush)}
+.offers p{display:flex;gap:.6rem;align-items:center;font-size:.88rem}
+.offers svg{width:22px;height:22px;color:var(--hot);flex:none}
+.menu-list{list-style:none;padding:0;margin:0;display:grid;gap:.5rem}
+.menu-list a{display:flex;align-items:center;gap:.8rem;min-height:60px;text-decoration:none;font-family:var(--display);font-size:1.35rem;background:var(--tint,var(--t-pink));border-radius:18px;padding:.4rem .6rem}
+.menu-list img{width:48px;height:48px;border-radius:14px;object-fit:cover}
+.menu-sub{margin-top:1.2rem;display:grid;gap:.2rem;font-size:.95rem}
+.menu-sub a{min-height:42px;display:flex;align-items:center;gap:.5rem;text-decoration:none;color:var(--muted)}
+.line{display:grid;grid-template-columns:76px 1fr auto;gap:.8rem;padding-block:.9rem;border-bottom:1px solid var(--line);align-items:start}
+.line .lm{width:76px;height:76px;border-radius:16px;background:var(--tint,var(--t-pink));padding:6px}
+.line .lm img{width:100%;height:100%;object-fit:cover;border-radius:11px}
+.line h3{font-size:1.15rem;line-height:1.1}
+.line .qty{min-height:40px;margin-top:.45rem}
+.line .qty button{width:38px;height:38px}
+.line-r{text-align:right;display:grid;gap:.3rem;justify-items:end}
+.rm{border:0;background:none;color:var(--muted);font-size:.8rem;text-decoration:underline;cursor:pointer;min-height:32px}
+.upsell h3{font-size:1.2rem;margin:1.2rem 0 .6rem}
+.ups{display:grid;grid-auto-flow:column;grid-auto-columns:150px;gap:.6rem;overflow-x:auto;padding-bottom:.4rem}
+.up{background:var(--tint,var(--t-pink));border-radius:18px;padding:.5rem;display:grid;gap:.35rem;font-size:.82rem;line-height:1.2}
+.up img{border-radius:12px;aspect-ratio:1;object-fit:cover;width:100%}
+.up button{min-height:36px;border:0;border-radius:10px;background:var(--ink);color:#fff;font-family:var(--display);cursor:pointer}
+.total{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--display);font-size:1.4rem}
+.small{font-size:.85rem;color:var(--muted)}
+.demo-msg{font-size:.85rem;background:var(--blush);border-radius:12px;padding:.7rem .8rem}
+.search{position:fixed;inset:0 0 auto;z-index:80;background:#fff;transform:translateY(-105%);transition:transform .35s var(--ease);max-height:88vh;display:flex;flex-direction:column;border-radius:0 0 30px 30px;padding-top:env(safe-area-inset-top,0px)}
+.search.open{transform:none}
+.search-bar{display:flex;align-items:center;gap:.5rem;padding-block:1rem}
+.search-bar label{flex:1;display:flex;align-items:center;gap:.6rem;border:2.5px solid var(--hot);border-radius:var(--pill);padding:0 1rem;min-height:56px}
+.search-bar input{flex:1;border:0;outline:0;font:inherit;font-size:1.05rem;min-width:0;background:transparent}
+.search-res{overflow-y:auto;padding-bottom:1.4rem}
+.sr-list{display:grid;gap:.4rem;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.sr-item{display:grid;grid-template-columns:56px 1fr auto;gap:.8rem;align-items:center;text-decoration:none;padding:.45rem;border-radius:16px}
+.sr-item:hover,.sr-item:focus-visible{background:var(--blush)}
+.sr-item img{width:56px;height:56px;border-radius:14px;object-fit:cover}
+.sr-item strong{font-family:var(--display);font-weight:400;font-size:1.1rem;display:block;line-height:1.1}
+.sr-item span{font-size:.8rem;color:var(--muted)}
+mark{background:var(--lemon);color:inherit;border-radius:3px}
+.toast{position:fixed;left:50%;bottom:calc(1rem + env(safe-area-inset-bottom,0px));z-index:90;transform:translate(-50%,150%);visibility:hidden;background:var(--ink);color:#fff;border-radius:20px;padding:.6rem .7rem .6rem .8rem;display:flex;gap:.8rem;align-items:center;transition:transform .35s var(--ease),visibility .35s;width:min(440px,calc(100% - 32px));box-shadow:0 14px 30px -14px #0007}
+.toast.show{transform:translate(-50%,0);visibility:visible}
+.toast>span{flex:1;min-width:0;line-height:1.25}
+.toast img{width:40px;height:40px;border-radius:12px;object-fit:cover}
+.toast button{background:var(--lemon);color:var(--ink);border:0;border-radius:var(--pill);padding:.45em .9em;font-family:var(--display);cursor:pointer;min-height:40px;white-space:nowrap;font-size:1rem}
+body.pdp-open .toast{bottom:calc(5.6rem + env(safe-area-inset-bottom,0px))}
+
+/* Pied de page */
+.foot{position:relative;margin-top:2rem}
+.foot .wrap{padding-block:2.5rem 2rem;display:grid;gap:2rem}
+.foot-grid{display:grid;gap:2rem;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+.foot-logo{grid-column:1/-1;display:grid;justify-items:center;text-align:center;gap:.6rem;order:-1}
+.foot-logo .big{font-family:var(--display);font-size:clamp(3.4rem,12vw,6.5rem);line-height:.9;color:var(--hot);text-shadow:4px 4px 0 var(--lemon)}
+.foot-logo p{font-family:var(--display);font-size:1.2rem;max-width:30ch}
+.foot h2{font-size:1.5rem;margin-bottom:.6rem}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:.05rem}
+.foot li a{display:inline-flex;min-height:36px;align-items:center;text-decoration:none;font-size:.95rem}
+.foot li a:hover{color:var(--hot)}
+.pay{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center}
+.pay span{border:1.5px solid var(--line);border-radius:8px;padding:.25em .6em;font-size:.76rem;background:#fff}
+.foot-bottom{border-top:1px solid var(--line);padding-top:1.2rem;display:flex;flex-wrap:wrap;gap:.8rem 1.5rem;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--muted)}
+.foot-bottom button{background:#fff;border:1.5px solid var(--line);border-radius:var(--pill);padding:.3em .9em;cursor:pointer;min-height:36px;font-size:.82rem}
+.copy code{font-family:var(--body);background:#fff;padding:.15em .5em;border-radius:6px;user-select:all;overflow-wrap:anywhere;font-size:.8rem}
+@media (min-width:900px){.foot-grid{grid-template-columns:1fr 1.6fr 1fr 1fr}.foot-logo{grid-column:2;grid-row:1;order:0}}
+
+.view{animation:viewIn .45s var(--ease)}
+@keyframes viewIn{from{opacity:.4;transform:translateY(8px)}}
+html.reduce *,html.reduce *::before,html.reduce *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- Motifs dessinés avec Fable 5.2 -->
+  <symbol id="m-wrapper" viewBox="0 0 64 64"><path fill="#FC7EB7" d="M21 32 7 20.5Q4 19 4.5 22.5L7 32l-2.5 9.5Q4 45 7 43.5zM43 32l14-11.5q3-1.5 2.5 2L57 32l2.5 9.5q.5 3.5-2.5 2z"/><path fill="none" stroke="#880E4F" stroke-width="2" stroke-linecap="round" opacity=".45" d="M10 32h8M46 32h8"/><circle cx="32" cy="32" r="13" fill="#880E4F"/><path fill="none" stroke="#FFF0F9" stroke-width="2.5" stroke-linecap="round" d="M24 28a9 9 0 0 1 8-5"/></symbol>
+  <symbol id="m-wrapper-y" viewBox="0 0 64 64"><path fill="#FFE45C" d="M21 32 7 20.5Q4 19 4.5 22.5L7 32l-2.5 9.5Q4 45 7 43.5zM43 32l14-11.5q3-1.5 2.5 2L57 32l2.5 9.5q.5 3.5-2.5 2z"/><circle cx="32" cy="32" r="13" fill="#FFFFFF"/><path fill="none" stroke="#FC7EB7" stroke-width="2.5" stroke-linecap="round" d="M24 28a9 9 0 0 1 8-5"/></symbol>
+  <symbol id="m-lisse" viewBox="0 0 48 48"><path fill="#FC7EB7" d="M24 5S9 22 9 30a15 15 0 0 0 30 0C39 22 24 5 24 5z"/><path fill="none" stroke="#880E4F" stroke-width="3" stroke-linecap="round" opacity=".3" d="M35.5 31A11.5 11.5 0 0 1 24 41.5"/><path fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" d="M15.5 30c0-4 3-9 6-13"/><circle cx="17.5" cy="35.5" r="1.8" fill="#fff"/></symbol>
+  <symbol id="m-sucre" viewBox="0 0 48 48"><g stroke-linecap="round"><path fill="#FC7EB7" stroke="#FFF0F9" stroke-width="2" stroke-dasharray=".1 3.4" d="M24 5S9 22 9 30a15 15 0 0 0 30 0C39 22 24 5 24 5z"/><path fill="none" stroke="#880E4F" stroke-width="1.6" opacity=".35" d="M24 25h0M18 32h0M29 31.5h0M23 38.5h0M32 37h0"/><path fill="none" stroke="#fff" stroke-width="2.4" d="M24 14h0M20 21h0M27 21.5h0M16 28h0M23 29.5h0M31 27.5h0M14 34.5h0M20.5 36h0M27 35h0M34 33h0M18 41h0M25 42.5h0M31 40.5h0"/></g></symbol>
+  <symbol id="m-sparkle" viewBox="0 0 24 24"><path fill="currentColor" d="M12 1c.8 6.5 4.5 10.2 11 11-6.5.8-10.2 4.5-11 11-.8-6.5-4.5-10.2-11-11 6.5-.8 10.2-4.5 11-11z"/></symbol>
+  <symbol id="m-box" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 30h40v22a2 2 0 0 1-2 2H14a2 2 0 0 1-2-2zM32 30v24"/><g transform="rotate(-9 10 28)"><rect x="9" y="20" width="46" height="8" rx="2"/><path d="M32 20v8M32 20c-3-7-11-6-9-1 1 2 5 2 9 1zm0 0c3-7 11-6 9-1-1 2-5 2-9 1z"/></g><path d="M57 3v6M54 6h6"/></g></symbol>
+  <symbol id="m-bag" viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20 13 53a3 3 0 0 0 3 3.3h32a3 3 0 0 0 3-3.3L47 20"/><path d="M17 20v-9a2 2 0 0 1 2-2h26a2 2 0 0 1 2 2v9z"/><path d="M28 14.5h8"/><circle cx="32" cy="38" r="9"/><path stroke-width="3.5" d="M29 36h0M35 37h0M31.5 42h0"/></g></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></g></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M5 8h14l-1 12.5a1 1 0 0 1-1 .9H7a1 1 0 0 1-1-.9z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></g></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="m14 6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m10 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></g></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></g></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></g></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12.5" rx="2.5"/><path d="M3 10h18M7 15h4"/></g></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 7h11M9 12h11M9 17h7"/><circle cx="4.5" cy="7" r=".6"/><circle cx="4.5" cy="12" r=".6"/><circle cx="4.5" cy="17" r=".6"/></g></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3.5 12.5V4.5h8l9 9-8 8z"/><circle cx="8" cy="9" r="1.4"/></g></symbol>
+  <symbol id="i-gift" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><rect x="3.5" y="8" width="17" height="4" rx="1"/><path d="M5 12v8h14v-8M12 8v12M12 8c-1.5-4-6-4-5-1 .5 1.2 3 1 5 1zm0 0c1.5-4 6-4 5-1-.5 1.2-3 1-5 1z"/></g></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M5 20h14l-1.5-11h-11z"/><path d="M9 9a3 3 0 0 1 6 0"/></g></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M19 15.5A8 8 0 1 1 9 4.5a6.5 6.5 0 0 0 10 11z"/></g></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.1"/></g></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></g></symbol>
+</svg>
+
+<button class="sr skip" type="button" onclick="document.getElementById('main').focus()">Aller au contenu</button>
+
+<div class="demo-strip" role="note">
+  <div class="wrap">
+    <span><strong>Maquette de refonte V2</strong> · démonstration<span class="long"> non reliée à la boutique</span>, aucune commande possible</span>
+    <button type="button" id="motionToggle" aria-pressed="false">Réduire les animations</button>
+  </div>
+</div>
+
+<div class="annonce" role="region" aria-label="Annonces de la boutique">
+  <div class="track">
+    <span><svg aria-hidden="true"><use href="#m-wrapper-y"/></svg>4,99 € · livraison Mondial Relay</span>
+    <span><svg aria-hidden="true"><use href="#m-wrapper-y"/></svg>−5 % · Bienvenue5</span>
+    <span class="dup" aria-hidden="true"><svg><use href="#m-wrapper-y"/></svg>4,99 € · livraison Mondial Relay</span>
+    <span class="dup" aria-hidden="true"><svg><use href="#m-wrapper-y"/></svg>−5 % · Bienvenue5</span>
+  </div>
+</div>
+
+<header class="hdr" id="hdr">
+  <div class="wrap">
+    <div class="bar">
+      <div class="hdr-left">
+        <button class="icon-btn menu-btn" type="button" id="menuBtn" aria-label="Ouvrir le menu" aria-controls="menu" aria-expanded="false"><svg class="ico"><use href="#i-menu"/></svg></button>
+        <button class="navlink" type="button" id="megaBtn" aria-expanded="false" aria-controls="mega">Nos bonbons <svg><use href="#i-down"/></svg></button>
+        <a class="navlink" href="#boutique-box">Box surprise</a>
+      </div>
+      <a class="logo" href="#accueil" aria-label="CandyBeauty, accueil"><svg aria-hidden="true"><use href="#m-wrapper"/></svg><span>CandyBeauty</span></a>
+      <div class="hdr-right">
+        <a class="navlink" href="#boutique-halal">Halal</a>
+        <button class="icon-btn" type="button" id="searchBtn" aria-label="Rechercher un bonbon" aria-controls="search" aria-expanded="false"><svg class="ico"><use href="#i-search"/></svg></button>
+        <button class="icon-btn" type="button" id="cartBtn" aria-label="Ouvrir le panier" aria-controls="cart" aria-expanded="false"><svg class="ico"><use href="#i-bag"/></svg><span class="count" id="cartCount" hidden>0</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="mega" id="mega" hidden><div class="mega-in" id="megaIn"></div></div>
+</header>
+
+<main id="main" tabindex="-1"></main>
+
+<footer class="foot">
+  <svg class="curve c-blush" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true" style="display:block;margin-bottom:-1px"><path d="M0 80C360 0 1080 0 1440 80z"/></svg>
+  <div style="background:var(--blush)">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-logo">
+        <span class="big" aria-hidden="true">CandyBeauty</span>
+        <p>Bonbons fruités, acidulés et sélection halal en portions de 100 g.</p>
+        <div class="pay" aria-label="Moyens de paiement acceptés"><span>CB</span><span>Visa</span><span>Mastercard</span><span>Amex</span><span>PayPal</span><span>Apple Pay</span><span>Google Pay</span><span>Shop Pay</span><span>Klarna</span><span>Bancontact</span></div>
+      </div>
+      <div>
+        <h2>Shop</h2>
+        <ul id="footCols"></ul>
+      </div>
+      <div>
+        <h2>Aide</h2>
+        <ul>
+          <li><a href="https://candybeauty.org/policies/shipping-policy" target="_blank" rel="noopener">Livraison</a></li>
+          <li><a href="https://candybeauty.org/policies/refund-policy" target="_blank" rel="noopener">Remboursement</a></li>
+          <li><a href="https://candybeauty.org/policies/contact-information" target="_blank" rel="noopener">Coordonnées</a></li>
+        </ul>
+        <p class="copy small" style="margin-top:.6rem">E-mail :<br><code>contact.candybeauty@gmail.com</code></p>
+      </div>
+      <div>
+        <h2>Politiques</h2>
+        <ul>
+          <li><a href="https://candybeauty.org/policies/terms-of-sale" target="_blank" rel="noopener">CGV</a></li>
+          <li><a href="https://candybeauty.org/policies/privacy-policy" target="_blank" rel="noopener">Confidentialité</a></li>
+          <li><a href="https://candybeauty.org/policies/legal-notice" target="_blank" rel="noopener">Mentions légales</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 CandyBeauty · France · EUR €</span>
+      <span>Maquette : prix, visuels et textes relevés sur candybeauty.org le 23/11/2026</span>
+      <button type="button" id="motionToggle2">Réduire les animations</button>
+    </div>
+  </div>
+  </div>
+</footer>
+
+<div class="scrim" id="scrim"></div>
+
+<aside class="drawer left" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+  <div class="drawer-head"><a class="logo" href="#accueil"><span style="font-size:1.5rem">CandyBeauty</span></a><button class="icon-btn" type="button" data-close aria-label="Fermer le menu"><svg class="ico"><use href="#i-close"/></svg></button></div>
+  <div class="drawer-body">
+    <ul class="menu-list" id="menuList"></ul>
+    <div class="menu-sub">
+      <a href="#assortiment">Composer mon assortiment <span class="tag-idea" style="font-size:.6rem">Idée</span></a>
+      <a href="https://candybeauty.org/policies/shipping-policy" target="_blank" rel="noopener">Livraison</a>
+      <a href="https://candybeauty.org/policies/contact-information" target="_blank" rel="noopener">Contact</a>
+    </div>
+  </div>
+</aside>
+
+<aside class="drawer right" id="cart" role="dialog" aria-modal="true" aria-labelledby="cartTitle" hidden>
+  <div class="drawer-head"><h2 id="cartTitle">Ton panier</h2><button class="icon-btn" type="button" data-close aria-label="Fermer le panier"><svg class="ico"><use href="#i-close"/></svg></button></div>
+  <div class="offers">
+    <p><svg><use href="#i-pin"/></svg><span>Livraison en point relais <strong>Mondial Relay : 4,99 €</strong></span></p>
+    <p><svg><use href="#i-tag"/></svg><span><strong>−5 % · Bienvenue5</strong> (voir conditions sur la boutique)</span></p>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot" id="cartFoot"></div>
+</aside>
+
+<div class="search" id="search" role="dialog" aria-modal="true" aria-label="Recherche" hidden>
+  <div class="wrap">
+    <div class="search-bar">
+      <label for="q"><svg class="ico" style="color:var(--hot)"><use href="#i-search"/></svg><span class="sr">Rechercher</span><input id="q" type="search" placeholder="Fraise, cola, halal, Bubs…" autocomplete="off"></label>
+      <button class="icon-btn" type="button" data-close aria-label="Fermer la recherche"><svg class="ico"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="search-res" id="searchRes" aria-live="polite"></div>
+  </div>
+</div>
+
+<div class="buybar" id="buybar"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="application/json" id="cb-data">[{"h": "ananas-lisses-100g-halal", "url": "https://candybeauty.org/products/ananas-lisses-100g-halal", "t": "Ananas lisses ( 100g ) Halal", "d": "Halal. Ingrédients : Sirop de glucose, eau, sucre, amidon, gélatine, acidifiant : acide citrique, régulateur d'acidité : citrate de sodium, agent d'enrobage : cire de caranuba, colorants : E100, E133.", "img": "img/ananas-lisses-100g-halal.jpg", "v": [{"t": "Default Title", "p": 1.9, "c": null, "a": true}]}, {"h": "anneaux-perles-100g", "url": "https://candybeauty.org/products/anneaux-perles-100g", "t": "Anneaux perlés ( 100g )", "d": "Ingrédients : Sucre, sirop de glucose, eau, farine de riz, dextrose, gélatine enrobée Halal, acidifiants : E296, R350ii, sirop de sucre inverti, gélifiant : E440, acidifiant : E330, arômes, agent d'enrobage : E414, colorants : E102, E122, E129, E133, E153.", "img": "img/anneaux-perles-100g.jpg", "v": [{"t": "Default Title", "p": 2.2, "c": null, "a": true}]}, {"h": "anneaux-sucres-framboise-100g", "url": "https://candybeauty.org/products/anneaux-sucres-framboise-100g", "t": "Anneaux sucrés framboise ( 100g ) Halal", "d": "Halal. Ingrédients : Sirop de glucose, sucre, eau, gélatine de boeuf, amidon modifié de pomme de terre, acidifiants : E330, E270, E296, arômes, agent d'enrobage : cire de carnauba, colorant E133. Sans Gluten.", "img": "img/anneaux-sucres-framboise-100g.jpg", "v": [{"t": "Default Title", "p": 2.1, "c": null, "a": false}]}, {"h": "anneaux-sucres-passion", "url": "https://candybeauty.org/products/anneaux-sucres-passion", "t": "Anneaux sucrés Passion ( 100g ) Halal", "d": "Halal. Ingrédients : Sirop de glucose, sucre, eau, gélatine de boeuf, amidon modifié de pomme de terre, acidifiants : E296, E330, E270, arôme, agents d'enrobage : monostéarate de glycérol, (tournesol E471), huile végétale (coco, karité), colorants : E122, E133. Sans Gluten.", "img": "img/anneaux-sucres-passion.jpg", "v": [{"t": "Default Title", "p": 2.1, "c": null, "a": false}]}, {"h": "asteroids-3x-chocolat-100g", "url": "https://candybeauty.org/products/asteroids-3x-chocolat-100g", "t": "Asteroids 3x chocolat ( 100g )", "d": "Ingrédients : Sucre, sirop de glucose, eau, dextrose, farine de riz, poudre de cacao dégraissée (4%), gélatine halal, gélifiant : E440, acidifiant : concentré de pommes caramélisées, arômes naturels, concentré (radis, carotte).", "img": "img/asteroids-3x-chocolat-100g.jpg", "v": [{"t": "Default Title", "p": 2.1, "c": null, "a": true}]}, {"h": "avocat-100g-halal", "url": "https://candybeauty.org/products/avocat-100g-halal", "t": "Avocat mangue lisse ( 100g ) halal", "d": "Ingrédients : Sirop de glucose, sucre, eau, gélatine, amidon modifié de pomme de terre, acidifiants : E330, E270, E296, Colorants :E102, E129, E133, huile végétale, arôme, agent de démoulage cire de carnauba.", "img": "img/avocat-100g-halal.jpg", "v": [{"t": "Default Title", "p": 2.1, "c": null, "a": false}]}, {"h": "bague-acier-inoxydable-1", "url": "https://candybeauty.org/products/bague-acier-inoxydable-1", "t": "Bague acier inoxydable", "d": "", "img": "img/bague-acier-inoxydable-1.jpg", "v": [{"t": "Default Title", "p": 8.0, "c": 12.0, "a": true}]}, {"h": "bague-acier-inoxydable", "url": "https://candybeauty.org/products/bague-acier-inoxydable", "t": "Bague acier inoxydable", "d": "", "img": "img/bague-acier-inoxydable.jpg", "v": [{"t": "Default Title", "p": 8.0, "c": 12.0, "a": true}]}, {"h": "bague-en-acier-inoxydable", "url": "https://candybeauty.org/products/bague-en-acier-inoxydable", "t": "Bague en acier inoxydable", "d": "", "img": "img/bague-en-acier-inoxydable.jpg", "v": [{"t": "Default Title", "p": 12.0, "c": null, "a": false}]}, {"h": "balle-de-golf-fraise-100g", "url": "https://candybeauty.org/products/balle-de-golf-fraise-100g", "t": "Balle de golf fraise ( 50g )", "d": "Ingrédients : Sirop de glucose et de fructose, sucre, eau, gélifiant : gélatine, protéines de lait, arômes, colorants : E120, E160c.", "img": "img/balle-de-golf-fraise-100g.jpg", "v": [{"t": "Default Title", "p": 1.9, "c": null, "a": true}]}, {"h": "bananes-fourrees-au-chocolat-lot-de-3", "url": "https://candybeauty.org/products/bananes-fourrees-au-chocolat-lot-de-3", "t": "Bananes fourrées au chocolat x3", "d": "", "img": "img/bananes-fourrees-au-chocolat-lot-de-3.jpg", "v": [{"t": "Default Title", "p": 1.9, "c": null, "a": false}]}, {"h": "bandeau-coca-x10", "url": "https://candybeauty.org/products/bandeau-coca-x10", "t": "Bandeau coca x10", "d": "Ingrédients : Sirop de glucose, eau, amidon de maïs, humectant : glycérine, acidifiant : acide citrique, acide malique, graisse végétale (palme), acidifiant : citrate de sodium, arômes, émusifiant E471, conservateur : sorbate de potassium, colorant E150d.", "img": "img/bandeau-coca-x10.jpg", "v": [{"t": "Default Title", "p": 2.0, "c": null, "a": true}]}, {"h": "bandeau-groseille-vanille-x10-halal", "url": "https://candybeauty.org/products/bandeau-groseille-vanille-x10-halal", "t": "Bandeau groseille/vanille x10 halal", "d": "Ingrédients : Sucre, Sirop de glucose-fructose, FARINE DE BLÉ, Eau, Acidulant : E330, E296, Graisse végétale (Noix de coco), Régulateur d’acidité : E350, Émulsifiant : E471, Arômes, Agent de conservation : E202, Colorants E102*, E129*, E133, E341, E516.", "img": "img/bandeau-groseille-vanille-x10-halal.jpg", "v": [{"t": "Default Title", "p": 2.0, "c": null, "a": false}]}, {"h": "bandeau-mangue-passion-sucres-x10-halal", "url": "https://candybeauty.org/products/bandeau-mangue-passion-sucres-x10-halal", "t": "Bandeau mangue/passion sucres x10 halal", "d": "Ingrédients : Sucre, sirop de glucose fructose, farine de BLE (GLUTEN), eau, acidifiants. E330, E296, graisse végétale (coco). Correcteur d’acide E350, Emulsifiant E471, Arome conservateur E202, colorant.", "img": "img/bandeau-mangue-passion-sucres-x10-halal.jpg", "v": [{"t": "Default Title", "p": 2.0, "c": null, "a": false}]}, {"h": "bandeau-pomme-sucrees-x10", "url": "https://candybeauty.org/products/bandeau-pomme-sucrees-x10", "t": "Bandeau pomme sucrées x10", "d": "", "img": "img/bandeau-pomme-sucrees-x10.jpg", "v": [{"t": "Default Title", "p": 2.0, "c": null, "a": true}]}, {"h": "billes-drageifiee-anis-100g", "url": "https://candybeauty.org/products/billes-drageifiee-anis-100g", "t": "Billes dragéifiée Anis ( 50g )", "d": "Ingrédients : Sucre, sirop de glucose, amidon de blé et autres amidons, agent d'enrobage E903, arôme.", "img": "img/billes-drageifiee-anis-100g.jpg", "v": [{"t": "Default Title", "p": 1.85, "c": null, "a": true}]}, {"h": "billets-en-bonbon-x10", "url": "https://candybeauty.org/products/billets-en-bonbon-x10-🌱", "t": "Billets en bonbon x10 🌱", "d": "Ingrédients : Fécule de pomme de terre, huile végétale, eau, parfum vanille, arômes, édulcorant : sucralose, colorants : E120, E160a, E133.", "img": "img/billets-en-bonbon-x10.jpg", "v": [{"t": "Default Title", "p": 1.25, "c": 1.5, "a": true}]}, {"h": "bisous-twist-fraise-100g", "url": "https://candybeauty.org/products/bisous-twist-fraise-100g", "t": "Bisous twist fraise ( 100g )", "d": "Ingrédients : Sirop de glucose, sucre, eau, gélatine de boeuf, amidon modifié de pomme de terre, acidifiants : E330, arôme, agent d'enrobage : huile végétale (palme), E903, E901, colorants : E163, E129, E160a(I). Sans Gluten.", "img": "img/bisous-twist-fraise-100g.jpg", "v": [{"t": "Default Title", "p": 1.95, "c": null, "a": true}]}, {"h": "bisous-twist-peche-100g-halal", "url": "https://candybeauty.org/products/bisous-twist-peche-100g-halal", "t": "Bisous twist pêche lisse ( 100g ) halal", "d": "Ingrédients :", "img": "img/bisous-twist-peche-100g-halal.jpg", "v": [{"t": "Default Title", "p": 1.99, "c": null, "a": false}]}, {"h": "bonbon-caramel-fouree-pistache-x10", "url": "https://candybeauty.org/products/bonbon-caramel-fouree-pistache-x10", "t": "Bonbon caramel fourée pistache ( x10 )", "d": "Un bonbon dur au caramel et à la pistache, vegan et sans gluten Découvrez le bonbon dur fourré à la pistache de la marque FIDA BONELLE , une confiserie italienne réputée pour ses produits de qualité. Ce bonbon est 100% végétal, sans gélatine ni gluten, et offre une coque de caramel croquante renfermant une crème onctueuse à la pistache. Son goût raffiné ravira les amateurs de confiseries traditionnelles.", "img": "img/bonbon-caramel-fouree-pistache-x10.jpg", "v": [{"t": "Default Title", "p": 2.6, "c": 2.8, "a": false}]}, {"h": "bonbons-cailloux-50g", "url": "https://candybeauty.org/products/bonbons-cailloux-50g", "t": "Bonbons cailloux ( 50g )", "d": "Ingrédients : Sucre, sirop de glucose, acide citrique, amidon de riz et autres amidons, colorants : E100, E120, E150c, E153, E160c, arômes, agents d'enrobage : E414, E901, E904.", "img": "img/bonbons-cailloux-50g.jpg", "v": [{"t": "Default Title", "p": 1.6, "c": null, "a": false}]}, {"h": "bool-karaneige-caramel-100g", "url": "https://candybeauty.org/products/bool-karaneige-caramel-100g", "t": "Bools Karaneige caramel ( 100g )", "d": "Ingrédients : Sucre, sirop de glucose, eau, graisse végétale hydrogénée, dextrose, acidifiant : acide citrique, stabilisant: sorbitol, arômes, colorants : E100, E160c, E120, émulsifiant : E473, lait.", "img": "img/bool-karaneige-caramel-100g.jpg", "v": [{"t": "Default Title", "p": 2.5, "c": null, "a": true}]}, {"h": "bools-framboise-100g-tache-langue", "url": "https://candybeauty.org/products/bools-framboise-100g-tache-langue", "t": "Bools framboise (100g) tache langue", "d": "Ingrédients : Sucre, Sirop de glucose, eau, graisse végétale hydrogénée, dextrose, acidifiant : acide citrique, stabilisant : sorbitol, gélatine, arôme, émulsifiant E473, colorants : E133. Peut contenir des traces de lait.", "img": "img/bools-framboise-100g-tache-langue.jpg", "v": [{"t": "Default Title", "p": 2.5, "c": null, "a": true}]}, {"h": "bouteille-cola-framboise-100g-halal", "url": "https://candybeauty.org/products/bouteille-cola-framboise-100g-halal", "t": "Bouteille cola framboise (100g ) halal", "d": "Ingrédients : Sirop de glucose, sucre, eau, gélatine de boeuf, amidon modifié de pomme de terre, acidifiants : E330, E270, agent d'enrobage : cire de carnauba, arôme, colorants : E133. Sans Gluten.", "img": "img/bouteille-cola-framboise-100g-halal.jpg", "v": [{"t": "Default Title", "p": 1.95, "c": null, "a": true}]}, {"h": "bouteille-fizzy-100g-halal", "url": "https://candybeauty.org/products/bouteille-fizzy-100g-halal", "t": "Bouteille bubbliz ( 100g ) halal", "d": "Ingrédients : Sirop de glucose, sucre, eau, gélatine de boeuf, amidon modifié de maïs, acidifiants : E270, E330, E296, dextrose, arômes, colorants : E133, E129, agent d'enrobage : cire de carnauba. Sans Gluten.", "img": "img/bouteille-fizzy-100g-halal.jpg", "v": [{"t": "Default Title", "p": 1.95, "c": null, "a": true}]}, {"h": "bouteille-harissa-xl-100g-halal", "url": "https://candybeauty.org/products/bouteille-harissa-xl-100g-halal", "t": "Bouteille Harissa xl x5 halal", "d": "Ingrédients : Sirop de glucose, sucre, eau, amidon modifié de pomme de terre, amidon, gélatine de boeuf halal, acidifiants : E330, E270, E296, correcteur d'acidité : malate de sodium, arôme, colorants : E150c, E163, E129, E160a(i). ✔️ Sans Gluten ✔️ halal ❌ interdit aux enfants de moins de 3 ans.", "img": "img/bouteille-harissa-xl-100g-halal.jpg", "v": [{"t": "Default Title", "p": 1.89, "c": null, "a": true}]}, {"h": "box-1kg-de-bubs", "url": "https://candybeauty.org/products/box-1kg-de-bubs", "t": "Box 1kg de bubs", "d": "1kg de bubs des bonbons suédois et vegan 🌱", "img": "img/box-1kg-de-bubs.jpg", "v": [{"t": "Default Title", "p": 29.99, "c": null, "a": false}]}, {"h": "box-bandeau-x50", "url": "https://candybeauty.org/products/box-bandeau-x50", "t": "Box Bandeau x50", "d": "Découvrez la box bandeau x50.", "img": "img/box-bandeau-x50.jpg", "v": [{"t": "Default Title", "p": 12.99, "c": null, "a": false}]}, {"h": "box-decouverte-surprise-1", "url": "https://candybeauty.org/products/box-decouverte-surprise-1", "t": "Box découverte surprise gourmande", "d": "Découvrez votre box surprise gourmande et tout ce qui y'a à l'intérieur. X 1kg bonbons x10 bandeaux x 1 jumbo x 1 paquet de pipas x 1 mallow x1 collier dextrose", "img": "img/box-decouverte-surprise-1.jpg", "v": [{"t": "Default Title", "p": 30.0, "c": null, "a": false}]}, {"h": "box-lisse-sucree-500g", "url": "https://candybeauty.org/products/box-lisse-sucree-500g", "t": "Box découverte lisse, sucrée", "d": "", "img": "img/box-lisse-sucree-500g.jpg", "v": [{"t": "500g", "p": 10.99, "c": null, "a": true}, {"t": "1kg", "p": 20.99, "c": null, "a": true}, {"t": "2kg", "p": 40.99, "c": null, "a": true}, {"t": "3kg", "p": 60.99, "c": null, "a": true}]}, {"h": "box-surprise-lisse-500g", "url": "https://candybeauty.org/products/box-surprise-lisse-500g", "t": "Box découverte lisse", "d": "Découvrez la box sucré de 500g de bonbon.", "img": "img/box-surprise-lisse-500g.jpg", "v": [{"t": "500g", "p": 10.99, "c": null, "a": true}, {"t": "1kg", "p": 20.99, "c": null, "a": true}, {"t": "2kg", "p": 40.99, "c": null, "a": true}, {"t": "3kg", "p": 60.99, "c": null, "a": true}]}, {"h": "box-surprise-sucre-500g", "url": "https://candybeauty.org/products/box-surprise-sucre-500g", "t": "Box découverte Sucrés", "d": "La box surprise sucrées de bonbon.", "img": "img/box-surprise-sucre-500g.jpg", "v": [{"t": "500g", "p": 10.99, "c": null, "a": false}, {"t": "1kg", "p": 20.99, "c": null, "a": false}, {"t": "2kg", "p": 40.99, "c": null, "a": false}, {"t": "3kg", "p": 60.99, "c": null, "a": false}]}, {"h": "bubs-banane-ovale", "url": "https://candybeauty.org/products/bubs-banane-ovale-bonbons-suedois-100g-precommande", "t": "Bubs banane / caramel ovale - bonbons suédois ( 100g )", "d": "Ingrédients : Sirop de glucose-fructose, sucre, amidon de maïs, eau, correcteurs d'acidité (acide malique, citrate de sodium), protéines de pomme de terre, arômes, colorants (E150d, E100), huile de COCO, agent de glaçage (cire de carnauba) Allergènes : Peut contenir des traces de LAIT, d'ARACHIDES, de GLUTEN, de SOJA, d'ŒUFS.", "img": "img/bubs-banane-ovale.jpg", "v": [{"t": "Default Title", "p": 2.99, "c": null, "a": false}]}, {"h": "bubs-grenade-ovale", "url": "https://candybeauty.org/products/bubs-grenade-ovale-bonbons-suedois-100g-precommande", "t": "Bubs Grenade / Fraise ovale - bonbons suédois ( 100g )", "d": "veegie🌱 Ingrédients : Sirop de glucose-fructose, sucre, fécule de maïs, eau, régulateurs d'acidité (E296, E331), protéine de pomme de terre, arômes, colorants (concentré de carotte noire), huile de coco, agent de collage (E903)", "img": "img/bubs-grenade-ovale.jpg", "v": [{"t": "Default Title", "p": 2.99, "c": null, "a": false}]}, {"h": "bubs-losange-tutti-frutti", "url": "https://candybeauty.org/products/bubs-losange-tutti-frutti-acides-bonbons-suedois-100g-precommande", "t": "Bubs losange Tutti frutti acides - bonbons suédois ( 100g )", "d": "veegie🌱 Ingrédients : sucre, sirop de glucose-fructose, amidon de maïs, eau, régulateurs d'acidité (E296, E331), protéines de pomme de terre, arômes, colorants (E150b, E141, E100). Allergènes : Peut contenir des traces de LAIT, d'ARACHIDES, de GLUTEN, de SOJA, d'ŒUFS.", "img": "img/bubs-losange-tutti-frutti.jpg", "v": [{"t": "Default Title", "p": 2.99, "c": null, "a": true}]}, {"h": "bubs-minis-poires-oval", "url": "https://candybeauty.org/products/bubs-minis-poires-oval-bonbons-suedois-100g-precommande", "t": "Bubs minis poires oval - bonbons suédois ( 100g )", "d": "veegie 🌱 Ingrédients : Sucre, sirop de glucose-fructose, amidon de maïs, eau, régulateurs d'acidité (E296, E331), protéines de pomme de terre, arômes, colorant (E141). Allergènes : Peut contenir des traces de LAIT, d'ARACHIDES, de GLUTEN, de SOJA, d'ŒUFS.", "img": "img/bubs-minis-poires-oval.jpg", "v": [{"t": "Default Title", "p": 2.99, "c": null, "a": false}]}, {"h": "bubs-sucrees-coca", "url": "https://candybeauty.org/products/bubs-sucrees-coca-100g-🌱", "t": "Bubs coca sucrées ( 100g ) 🌱", "d": "Ingrédients : Sirop de glucose-fructose, sucre, amidon de maïs, acide (acide malique), arômes, régulateur d'acidité (citrates de sodium), colorant (E150a).", "img": "img/bubs-sucrees-coca.jpg", "v": [{"t": "Default Title", "p": 2.99, "c": null, "a": false}]}, {"h": "ceinture-assorties-10-pieces", "url": "https://candybeauty.org/products/ceinture-assorties-10-pieces", "t": "Bandeau assorties sucrés 10 pièces halal", "d": "Halal. Parfum : fraise, framboise, citron, cola. Ingrédient : Sucre, farine de blé (contient du Gluten), sirop de glucose, eau, amidon de maïs, humectant : glycérine, acidifiant : acide citrique, acide malique, graisse végétale (palme), citrate de sodium, arômes, émusifiant : E471, conservateur : sorbate de potassium, colorants E100, E120, E133, E150d.", "img": "img/ceinture-assorties-10-pieces.jpg", "v": [{"t": "Default Title", "p": 2.05, "c": null, "a": true}]}]</script>
+<script>
+(() => {
+"use strict";
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const eur = n => n.toFixed(2).replace(".", ",") + " €";
+const store = { get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+                set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+const icon = (id, cls = "") => `<svg class="${cls}" aria-hidden="true"><use href="#${id}"/></svg>`;
+
+/* ---------- Données réelles relevées sur candybeauty.org ---------- */
+const P = JSON.parse($("#cb-data").textContent);
+const NEW = new Set(["bubs-grenade-ovale", "bisous-twist-fraise-100g", "bubs-minis-poires-oval"]);
+const TINTS = ["--t-pink", "--t-lemon", "--t-mint", "--t-peach", "--t-lilac", "--t-sky"];
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+function cleanName(t, keep) {
+  if (keep) return t.trim();
+  return cap(t.replace(/\([^)]*\)/g, " ").replace(/-\s*bonbons su[ée]dois/i, " ")
+    .replace(/(^|\s)(halal|lisses?|sucr[ée]e?s?|sucres)(?=\s|$|,)/gi, " ")
+    .replace(/\bx\s?\d+\b/gi, " ").replace(/\d+\s*pi[eè]ces/gi, " ").replace(/🌱/g, " ")
+    .replace(/\bxl\b/gi, "XL").replace(/\s+/g, " ").replace(/\s*,\s*$/, "").trim());
+}
+const wlab = t => t.replace(/(\d)\s*(kg|g)$/i, "$1 $2");
+const grams = s => { const m = /(\d+(?:[.,]\d+)?)\s*(kg|g)\b/i.exec(s); return m ? parseFloat(m[1].replace(",", ".")) * (m[2].toLowerCase() === "kg" ? 1000 : 1) : null; };
+P.forEach((p, i) => {
+  const t = p.t;
+  p.box = /^box/i.test(t); p.bijou = /bague/i.test(t);
+  p.lisse = !p.box && /lisse/i.test(t);
+  p.sucre = !p.box && /sucr/i.test(t);
+  p.halal = /halal/i.test(t);
+  p.veg = /🌱|vegan|veegie/i.test(t + " " + p.d);
+  p.suedois = /bubs/i.test(t);
+  p.choco = /chocolat/i.test(t);
+  p.nouveau = NEW.has(p.h);
+  const g = /\(\s*(\d+)\s*g\s*\)/i.exec(t);
+  p.g = g ? +g[1] : (/1kg/i.test(t) ? 1000 : null);
+  const x = /\bx\s?(\d+)\b/i.exec(t) || /(\d+)\s*pi[eè]ces/i.exec(t);
+  p.pcs = !p.g && x ? +x[1] : null;
+  p.multi = p.v.length > 1;
+  p.avail = p.v.some(v => v.a);
+  p.name = cleanName(t, p.box || p.bijou);
+  p.alt = p.name + " – photo produit CandyBeauty";
+  p.min = Math.min(...p.v.map(v => v.p));
+  p.tint = `var(${TINTS[i % TINTS.length]})`;
+  p.rot = [-4, 3, -2, 4, -3, 2][i % 6] + "deg";
+});
+const byH = Object.fromEntries(P.map(p => [p.h, p]));
+function fmtLine(p, vi) {
+  if (p.multi) { const v = p.v[vi ?? 0]; const g = grams(v.t); return `Box ${wlab(v.t)}` + (g ? ` · soit ${eur(v.p / g * 1000)}/kg` : ""); }
+  const pr = p.v[0].p;
+  if (p.g) return `${p.g >= 1000 ? "Box 1 kg" : "Sachet " + p.g + " g"} · soit ${eur(pr / p.g * 1000)}/kg`;
+  if (p.pcs) return `Lot de ${p.pcs} · soit ${eur(pr / p.pcs)} pièce`;
+  if (p.bijou) return "Bague en acier inoxydable";
+  return "";
+}
+const COLLS = [
+  { id: "tout", label: "Tous les produits", f: () => true, img: "anneaux-perles-100g", sub: "Toute la boutique", desc: "Toute la boutique en un coup d’œil. Filtre par texture, par régime ou par format." },
+  { id: "lisses", label: "Bonbons lisses", short: "Lisses", f: p => p.lisse, img: "ananas-lisses-100g-halal", icon: "m-lisse", sub: "Brillants, sans sucre en surface", desc: "Surface brillante, sans sucre en surface : les gélifiés lisses, en sachets de 100 g." },
+  { id: "sucres", label: "Bonbons sucrés", short: "Sucrés", f: p => p.sucre, img: "bandeau-pomme-sucrees-x10", icon: "m-sucre", sub: "Enrobés de cristaux de sucre", desc: "Enrobés de cristaux de sucre : bandeaux, anneaux, bouteilles et bubs." },
+  { id: "halal", label: "Halal", f: p => p.halal, img: "bouteille-cola-framboise-100g-halal", sub: "Indiqué dans le nom du produit", desc: "Les produits indiqués halal dans leur nom. La composition de chaque fiche précise la gélatine utilisée." },
+  { id: "suedois", label: "Bonbons suédois", short: "Suédois", f: p => p.suedois, img: "bubs-losange-tutti-frutti", sub: "Les Bubs, venus de Suède", desc: "Découvrez notre sélection de délicieux bonbons suédois authentiques. Des saveurs uniques et des textures irrésistibles qui raviront vos papilles." },
+  { id: "box", label: "Box surprise", f: p => p.box, img: "box-lisse-sucree-500g", sub: "De 500 g à 3 kg", desc: "Découvrez nos box surprise au choix lisse ou sucré pour un large choix de bonbons." },
+  { id: "nouveautes", label: "Nouveautés", f: p => p.nouveau, img: "bisous-twist-fraise-100g", sub: "Les dernières arrivées", desc: "Les dernières arrivées dans la boutique." },
+  { id: "bijoux", label: "Bijoux acier inoxydable", short: "Bijoux", f: p => p.bijou, img: "bague-acier-inoxydable-1", sub: "Bagues en acier inoxydable", desc: "Une petite sélection de bagues en acier inoxydable." },
+];
+const collById = Object.fromEntries(COLLS.map(c => [c.id, c]));
+const collHref = c => "#boutique" + (c.id === "tout" ? "" : "-" + c.id);
+
+/* ---------- Panier (démo, stocké dans ce navigateur) ---------- */
+let cart = store.get("cb-cart", []).filter(l => byH[l.h]);
+const saveCart = () => { store.set("cb-cart", cart); renderCount(); };
+const cartQty = () => cart.reduce((s, l) => s + l.q, 0);
+const lineKey = (h, vi) => h + "|" + vi;
+function addToCart(h, vi = 0, q = 1, quiet) {
+  const p = byH[h]; if (!p || !p.v[vi].a) return;
+  const l = cart.find(l => lineKey(l.h, l.vi) === lineKey(h, vi));
+  if (l) l.q = Math.min(99, l.q + q); else cart.push({ h, vi, q });
+  saveCart(); renderCart();
+  const c = $("#cartCount"); c.classList.remove("bump"); void c.offsetWidth; c.classList.add("bump");
+  if (!quiet) toast(p, q);
+}
+function renderCount() { const n = cartQty(), c = $("#cartCount"); c.textContent = n; c.hidden = !n; $("#cartBtn").setAttribute("aria-label", `Ouvrir le panier (${n} article${n > 1 ? "s" : ""})`); }
+function renderCart() {
+  const body = $("#cartBody"), foot = $("#cartFoot");
+  const inCart = new Set(cart.map(l => l.h));
+  const ups = P.filter(p => p.avail && !p.multi && !p.bijou && !inCart.has(p.h) && p.min <= 2.2).slice(0, 6);
+  const upsHtml = `<div class="upsell"><h3>Un petit sachet en plus&#8239;?</h3><div class="ups">${ups.map(p => `<div class="up" style="--tint:${p.tint}"><img src="${p.img}" alt=""><strong>${esc(p.name)}</strong><span>${eur(p.min)}</span><button type="button" data-add="${p.h}" aria-label="Ajouter ${esc(p.name)}">Ajouter</button></div>`).join("")}</div></div>`;
+  if (!cart.length) {
+    body.innerHTML = `<div class="empty" style="border:0"><svg><use href="#m-bag"/></svg><p style="font-family:var(--display);font-size:1.6rem">Ton panier est vide…</p><div style="display:grid;gap:.6rem"><a class="btn btn-hot" href="#boutique" data-close-nav>Découvrir nos bonbons</a><a class="btn btn-line" href="#assortiment" data-close-nav>Composer mon assortiment</a></div></div>${upsHtml}`;
+    foot.innerHTML = ""; return;
+  }
+  let total = 0;
+  body.innerHTML = cart.map(l => {
+    const p = byH[l.h], v = p.v[l.vi]; total += v.p * l.q;
+    return `<div class="line"><a class="lm" href="#produit-${p.h}" data-close-nav style="--tint:${p.tint}"><img src="${p.img}" alt="${esc(p.alt)}"></a>
+      <div><h3>${esc(p.name)}</h3><p class="small">${esc(fmtLine(p, l.vi).split(" · ")[0])}</p>
+        <div class="qty" role="group" aria-label="Quantité de ${esc(p.name)}"><button type="button" data-dec="${lineKey(l.h, l.vi)}" aria-label="Retirer un">${icon("i-minus", "ico")}</button><span>${l.q}</span><button type="button" data-inc="${lineKey(l.h, l.vi)}" aria-label="Ajouter un">${icon("i-plus", "ico")}</button></div></div>
+      <div class="line-r"><span class="price">${eur(v.p * l.q)}</span><button class="rm" type="button" data-rm="${lineKey(l.h, l.vi)}">Retirer</button></div></div>`;
+  }).join("") + upsHtml;
+  foot.innerHTML = `<div class="total"><span>Total estimé</span><span>${eur(total)}</span></div>
+    <p class="small">Taxes incluses. Réductions et frais d’expédition calculés à l’étape du paiement.</p>
+    <button class="buybtn" type="button" id="checkout"><span>Je commande</span><span>${eur(total)}</span></button>
+    <p class="demo-msg" id="demoMsg" hidden>Maquette : le paiement n’est pas simulé. Sur la vraie boutique, ce bouton ouvre le paiement Shopify.</p>`;
+}
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-inc],[data-dec],[data-rm],#checkout"); if (!t) return;
+  if (t.id === "checkout") { $("#demoMsg").hidden = false; return; }
+  const k = t.dataset.inc || t.dataset.dec || t.dataset.rm, l = cart.find(l => lineKey(l.h, l.vi) === k); if (!l) return;
+  if (t.dataset.inc) l.q = Math.min(99, l.q + 1);
+  if (t.dataset.dec) l.q -= 1;
+  if (t.dataset.rm || l.q < 1) cart = cart.filter(x => x !== l);
+  saveCart(); renderCart();
+  const again = $(`[data-${t.dataset.inc ? "inc" : "dec"}="${CSS.escape(k)}"]`); if (again) again.focus();
+});
+
+let toastT;
+function toast(p, q) {
+  const el = $("#toast");
+  el.innerHTML = `<img src="${p.img}" alt=""><span><strong>${q > 1 ? q + " × " : ""}${esc(p.name)}</strong><br><span class="small" style="color:#e9dfe4">ajouté au panier</span></span><button type="button" id="toastOpen">Voir le panier</button>`;
+  el.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove("show"), 3200);
+}
+document.addEventListener("click", e => { if (e.target.id === "toastOpen") { $("#toast").classList.remove("show"); openPanel("cart"); } });
+
+/* ---------- Panneaux ---------- */
+let openId = null, lastFocus = null;
+const BTN = { cart: "#cartBtn", menu: "#menuBtn", search: "#searchBtn" };
+function openPanel(id) {
+  closePanel(true); closeMega(); $("#toast").classList.remove("show");
+  const el = $("#" + id); lastFocus = document.activeElement;
+  el.hidden = false; requestAnimationFrame(() => { el.classList.add("open"); $("#scrim").classList.add("show"); });
+  openId = id; document.body.style.overflow = "hidden"; $(BTN[id]).setAttribute("aria-expanded", "true");
+  setTimeout(() => (id === "search" ? $("#q") : el.querySelector("[data-close]")).focus(), 60);
+}
+function closePanel(silent) {
+  if (!openId) return; const el = $("#" + openId);
+  el.classList.remove("open"); $("#scrim").classList.remove("show"); $(BTN[openId]).setAttribute("aria-expanded", "false");
+  const id = openId; openId = null; document.body.style.overflow = "";
+  setTimeout(() => { if (openId !== id) el.hidden = true; }, 380);
+  if (!silent && lastFocus) lastFocus.focus();
+}
+$("#cartBtn").onclick = () => openPanel("cart");
+$("#menuBtn").onclick = () => openPanel("menu");
+$("#searchBtn").onclick = () => openPanel("search");
+$("#scrim").onclick = () => closePanel();
+document.addEventListener("click", e => {
+  if (e.target.closest("[data-close]")) closePanel();
+  if (e.target.closest("[data-close-nav]") || (openId === "menu" && e.target.closest("#menu a[href^='#']")) || (openId === "search" && e.target.closest(".sr-item"))) closePanel(true);
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") { if (openId) closePanel(); else if (!$("#mega").hidden) { closeMega(); $("#megaBtn").focus(); } }
+  if (e.key === "Tab" && openId) {
+    const f = $$("a[href],button:not([disabled]),input,select", $("#" + openId)).filter(x => x.offsetParent); if (!f.length) return;
+    if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f.at(-1).focus(); }
+    else if (!e.shiftKey && document.activeElement === f.at(-1)) { e.preventDefault(); f[0].focus(); }
+  }
+});
+
+/* Méga-menu */
+const megaEl = $("#mega"), megaBtn = $("#megaBtn");
+$("#megaIn").innerHTML = COLLS.filter(c => c.id !== "tout").map(c => `<a href="${collHref(c)}"><img src="img/${c.img}.jpg" alt=""><span><strong>${c.label}</strong><small>${c.sub}</small></span></a>`).join("") + `<a class="btn btn-hot all" href="#boutique" style="display:inline-flex;grid-template-columns:none">Voir tous les bonbons</a>`;
+function closeMega() { megaEl.hidden = true; megaBtn.setAttribute("aria-expanded", "false"); }
+megaBtn.onclick = () => { const o = megaEl.hidden; megaEl.hidden = !o; megaBtn.setAttribute("aria-expanded", String(o)); };
+document.addEventListener("click", e => { if (!megaEl.hidden && !e.target.closest("#mega, #megaBtn")) closeMega(); if (e.target.closest("#mega a")) closeMega(); });
+
+/* Recherche */
+const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+function renderSearch() {
+  const q = $("#q").value.trim(), out = $("#searchRes");
+  if (!q) { out.innerHTML = `<p class="small" style="margin-bottom:.6rem">Suggestions</p><div class="chips" style="flex-wrap:wrap">${["Fraise", "Cola", "Halal", "Bubs", "Box", "Chocolat", "Mangue"].map(s => `<button class="chip" type="button" data-sugg="${s}">${s}</button>`).join("")}</div>`; return; }
+  const words = norm(q).split(/\s+/);
+  const hits = P.filter(p => { const hay = norm(p.t + " " + p.name + (p.halal ? " halal" : "") + (p.suedois ? " suedois" : "") + (p.box ? " box surprise" : "")); return words.every(w => new RegExp("(^|[^a-z0-9])" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).test(hay)); });
+  if (!hits.length) { out.innerHTML = `<div class="empty"><svg><use href="#m-wrapper"/></svg><p>Aucun bonbon ne correspond à « ${esc(q)} ».</p><button class="btn btn-line" type="button" data-sugg="">Effacer la recherche</button></div>`; return; }
+  const re = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").split(/\s+/).join("|") + ")", "gi");
+  out.innerHTML = `<p class="small" style="margin-bottom:.6rem">${hits.length} résultat${hits.length > 1 ? "s" : ""}</p><div class="sr-list">${hits.map(p => `<a class="sr-item" href="#produit-${p.h}"><img src="${p.img}" alt=""><span><strong>${esc(p.name).replace(re, "<mark>$1</mark>")}</strong><span>${esc(fmtLine(p).split(" · ")[0])}${p.avail ? "" : " · Épuisé"}</span></span><span class="price" style="font-size:1rem">${p.multi ? "dès " : ""}${eur(p.min)}</span></a>`).join("")}</div>`;
+}
+$("#q").addEventListener("input", renderSearch);
+document.addEventListener("click", e => { const s = e.target.closest("[data-sugg]"); if (s) { $("#q").value = s.dataset.sugg; renderSearch(); $("#q").focus(); } });
+
+/* ---------- Composants ---------- */
+function badges(p) {
+  const b = [];
+  if (!p.avail) b.push(`<span class="badge out">Épuisé</span>`);
+  else if (p.v[0].c) b.push(`<span class="badge promo">Promotion</span>`);
+  if (p.nouveau) b.push(`<span class="badge new">Nouveau</span>`);
+  if (p.lisse) b.push(`<span class="badge lisse">${icon("m-lisse")}Lisse</span>`);
+  if (p.sucre) b.push(`<span class="badge sucre">${icon("m-sucre")}Sucré</span>`);
+  if (p.halal) b.push(`<span class="badge halal">Halal</span>`);
+  if (p.veg) b.push(`<span class="badge veg" title="Indiqué 🌱 sur la boutique">🌱</span>`);
+  return `<div class="badges">${b.join("")}</div>`;
+}
+function card(p) {
+  const btn = !p.avail ? `<button class="add" type="button" disabled>Épuisé</button>`
+    : p.multi ? `<a class="add" href="#produit-${p.h}">Choisir le poids</a>`
+    : `<button class="add" type="button" data-add="${p.h}" aria-label="Ajouter ${esc(p.name)} au panier">Ajouter au panier</button>`;
+  return `<article class="card${p.avail ? "" : " soldout"}">
+    <a class="card-media" href="#produit-${p.h}" tabindex="-1" aria-hidden="true" style="--tint:${p.tint};--rot:${p.rot}"><img loading="lazy" src="${p.img}" alt="${esc(p.alt)}" width="348" height="348"></a>
+    ${badges(p)}
+    <h3><a href="#produit-${p.h}">${esc(p.name)}</a></h3>
+    <p class="fmt">${esc(fmtLine(p))}</p>
+    <p class="price">${p.multi ? "<small>dès </small>" : ""}${eur(p.min)}${p.v[0].c ? `<s><span class="sr">au lieu de </span>${eur(p.v[0].c)}</s>` : ""}</p>
+    ${btn}</article>`;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-add]"); if (!b) return;
+  addToCart(b.dataset.add);
+  if (b.closest(".up")) return;
+  b.classList.add("done"); const old = b.innerHTML; b.innerHTML = `${icon("i-check")} Ajouté`;
+  setTimeout(() => { b.classList.remove("done"); b.innerHTML = old; }, 1400);
+});
+document.addEventListener("click", e => { const b = e.target.closest("[data-rail]"); if (!b) return; const r = $("#" + b.dataset.rail); r.scrollBy({ left: (+b.dataset.dir) * r.clientWidth * .8, behavior: reduced() ? "auto" : "smooth" }); });
+const curve = (color, flip) => `<svg class="curve ${color}" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true" style="display:block;${flip ? "transform:scaleY(-1);margin-top:-1px" : "margin-bottom:-1px"}"><path d="M0 80C360 0 1080 0 1440 80z"/></svg>`;
+const floaters = list => list.map(([id, s, x, y, d, blur]) => `<svg class="float${blur ? " blur" : ""}" style="width:${s}px;height:${s}px;${x};top:${y};animation-delay:${d}s;color:var(--lemon)" aria-hidden="true"><use href="#${id}"/></svg>`).join("");
+const sel = hs => hs.map(h => byH[h]).filter(Boolean);
+
+/* ---------- Vues ---------- */
+function viewHome() {
+  const picks = sel(["bouteille-cola-framboise-100g-halal", "anneaux-perles-100g", "ananas-lisses-100g-halal", "bools-framboise-100g-tache-langue", "bandeau-pomme-sucrees-x10", "bisous-twist-fraise-100g", "bubs-losange-tutti-frutti", "bouteille-fizzy-100g-halal", "bouteille-harissa-xl-100g-halal", "ceinture-assorties-10-pieces"]);
+  const box = byH["box-lisse-sucree-500g"];
+  const tilts = COLLS.filter(c => !["tout", "box"].includes(c.id));
+  return `
+  <section class="hero" aria-labelledby="heroTitle">
+    ${floaters([["m-wrapper-y", 46, "left:46%", "16%", 0], ["m-sparkle", 22, "left:6%", "78%", 1.2], ["m-wrapper-y", 70, "right:-18px", "86%", 2, 1], ["m-sparkle", 18, "right:8%", "12%", .6]])}
+    <div class="wrap">
+      <div>
+        <span class="sticker">${icon("m-bag", "ico")} Bonbons en vrac · 100 g</span>
+        <h1 id="heroTitle" style="margin-top:1rem">Lisse ou sucré&#8239;? <span class="hl">À toi de choisir.</span></h1>
+        <p class="lede">Fruités, acidulés, halal ou suédois : remplis ton sachet de 100 g, ou laisse-toi surprendre avec une box.</p>
+        <div class="hero-cta"><a class="btn btn-lemon" href="#boutique">Goûter nos bonbons</a><a class="btn btn-white" href="#boutique-box">Box surprise</a></div>
+      </div>
+      <a class="stage" href="#boutique" aria-label="Voir tous les bonbons">
+        <span class="blob b1"><img src="img/ananas-lisses-100g-halal.jpg" alt="Ananas lisses"></span>
+        <span class="blob b2"><img src="img/bandeau-mangue-passion-sucres-x10-halal.jpg" alt="Bandeaux sucrés mangue passion"></span>
+        <span class="blob b3"><img src="img/bouteille-cola-framboise-100g-halal.jpg" alt="Bouteilles cola framboise"></span>
+        <span class="sticker s1">${icon("m-lisse", "ico")} Lisse</span>
+        <span class="sticker s2">${icon("m-sucre", "ico")} Sucré</span>
+        <span class="sticker s3">Halal</span>
+      </a>
+    </div>
+  </section>
+  ${curve("c-hot", true)}
+
+  <section class="sec" aria-labelledby="iconT">
+    <div class="wrap">
+      <div class="sec-title"><h2 id="iconT">Nos bonbons du moment</h2><span class="bubble" aria-hidden="true">Coucou<br>le vrac&#8239;!</span><p>Une sélection de sachets disponibles aujourd’hui dans la boutique.</p></div>
+      <div class="rail" id="railPicks">${picks.map(card).join("")}</div>
+      <div class="rail-nav"><button type="button" data-rail="railPicks" data-dir="-1" aria-label="Produits précédents">${icon("i-left", "ico")}</button><a class="btn btn-line" href="#boutique">Voir tous les bonbons</a><button type="button" data-rail="railPicks" data-dir="1" aria-label="Produits suivants">${icon("i-right", "ico")}</button></div>
+    </div>
+  </section>
+
+  ${curve("c-hot")}
+  <section class="band-hot" aria-labelledby="mixT">
+    ${floaters([["m-wrapper-y", 54, "left:3%", "8%", .4], ["m-sparkle", 26, "right:46%", "70%", 1.5]])}
+    <div class="wrap">
+      <div>
+        <span class="tag-idea" style="background:var(--lemon);color:var(--ink)">Proposition · n’existe pas encore</span>
+        <h2 id="mixT" style="margin-top:.8rem">Compose l’assortiment <span class="hl">dont tu rêves&#8239;!</span></h2>
+        <ul class="feat">
+          <li>${icon("m-wrapper")}Choisis tes saveurs préférées</li>
+          <li>${icon("i-scale")}Autant de sachets de 100 g que tu veux</li>
+          <li>${icon("i-gift")}Parfait pour offrir ou se faire plaisir</li>
+          <li>${icon("i-pin")}Mondial Relay à 4,99 €</li>
+        </ul>
+        <a class="btn btn-lemon" href="#assortiment">Je compose mon assortiment</a>
+      </div>
+      <div class="basket" aria-hidden="true">${["anneaux-perles-100g", "bools-framboise-100g-tache-langue", "bisous-twist-fraise-100g", "bouteille-fizzy-100g-halal", "bubs-losange-tutti-frutti", "bouteille-harissa-xl-100g-halal"].map(h => `<img loading="lazy" src="img/${h}.jpg" alt="">`).join("")}</div>
+    </div>
+  </section>
+  ${curve("c-hot", true)}
+
+  <section class="sec" aria-labelledby="allT">
+    <div class="wrap">
+      <div class="sec-title"><h2 id="allT">Lisse ou sucré, <span class="hl-pink">et bien plus&#8239;!</span></h2></div>
+      <div class="around">
+        <div class="around-col l">
+          <div class="pt">${icon("m-lisse")}<div><h3>Bonbons lisses</h3><p>Surface brillante, sans sucre en surface.</p></div></div>
+          <div class="pt">${icon("i-flag")}<div><h3>Sélection halal</h3><p>Indiquée dans le nom de chaque produit concerné.</p></div></div>
+          <div class="pt">${icon("m-bag")}<div><h3>Sachets de 100 g</h3><p>Le bon format pour goûter à tout.</p></div></div>
+        </div>
+        <div class="around-img"><img loading="lazy" src="img/anneaux-perles-100g.jpg" alt="Anneaux perlés multicolores"><span class="sticker">Anneaux perlés · ${eur(byH["anneaux-perles-100g"].min)}</span></div>
+        <div class="around-col">
+          <div class="pt">${icon("m-sucre")}<div><h3>Bonbons sucrés</h3><p>Enrobés de cristaux de sucre.</p></div></div>
+          <div class="pt">${icon("m-box")}<div><h3>Box découverte</h3><p>De 500 g à 3 kg, lisse, sucrée ou les deux.</p></div></div>
+          <div class="pt">${icon("i-list")}<div><h3>Ingrédients détaillés</h3><p>La composition est indiquée sur les fiches.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  ${curve("c-blush")}
+  <section class="band-blush" aria-labelledby="raysT">
+    <div class="wrap" style="padding-block:1.5rem 2.5rem">
+      <div class="sec-title"><h2 id="raysT">Fais le tour des rayons</h2></div>
+      <div class="tilts">${tilts.map((c, i) => `<a class="tilt" href="${collHref(c)}" style="--r:${[-3, 2, -1.5, 3, -2.5, 1.5][i % 6]}deg"><img loading="lazy" src="img/${c.img}.jpg" alt=""><strong>${c.label}</strong><span>${c.sub}</span></a>`).join("")}</div>
+    </div>
+  </section>
+  ${curve("c-blush", true)}
+
+  <section class="sec wrap" aria-labelledby="boxT">
+    <div class="boxfeat">
+      ${floaters([["m-sparkle", 24, "right:5%", "10%", 0]])}
+      <img loading="lazy" src="${box.img}" alt="${esc(box.alt)}">
+      <div style="display:grid;gap:1rem">
+        <span class="sticker" style="justify-self:start">Box surprise</span>
+        <h2 id="boxT">Indécis&#8239;? Prends les deux.</h2>
+        <p>Box découverte lisse, sucrée : un assortiment des deux textures. Existe aussi en 100 % lisse ou 100 % sucrée.</p>
+        <fieldset class="seg"><legend><span class="step-n">1</span>Choisis le poids</legend>${box.v.map((v, i) => `<label><input type="radio" name="boxw" value="${i}" ${i === 0 ? "checked" : ""} ${v.a ? "" : "disabled"}><span>${wlab(v.t)}</span></label>`).join("")}</fieldset>
+        <p><span class="price" id="boxPrice" style="font-size:2.2rem">${eur(box.v[0].p)}</span> <span class="unit" id="boxUnit">${esc(fmtLine(box, 0).split(" · ")[1] || "")}</span></p>
+        <div class="hero-cta" style="margin-top:0"><button class="btn btn-hot" type="button" id="boxAdd">Ajouter la box au panier</button><a class="btn btn-line" href="#boutique-box">Voir les box</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap sec" aria-label="Bon à savoir" style="padding-top:1rem">
+    <ul class="reassure">
+      <li>${icon("i-pin", "ri")}<strong>Mondial Relay</strong><span>4,99 € en point relais</span></li>
+      <li class="sep" aria-hidden="true">${icon("m-wrapper", "sep")}</li>
+      <li>${icon("i-clock", "ri")}<strong>Préparée sous</strong><span>4 jours ouvrables</span></li>
+      <li class="sep" aria-hidden="true">${icon("m-wrapper", "sep")}</li>
+      <li>${icon("i-mail", "ri")}<strong>Suivi par e-mail</strong><span>dès l’expédition</span></li>
+      <li class="sep" aria-hidden="true">${icon("m-wrapper", "sep")}</li>
+      <li>${icon("i-card", "ri")}<strong>Paiement</strong><span>CB, PayPal, Apple Pay, Klarna</span></li>
+    </ul>
+  </section>
+
+  <section class="sec wrap" aria-labelledby="vracT" style="padding-top:0">
+    <div class="vrac">
+      <div class="vrac-img"><img loading="lazy" src="img/bouteille-fizzy-100g-halal.jpg" alt="Bouteilles bubbliz en vrac"><span class="big100" aria-hidden="true">100 g</span></div>
+      <div>
+        <span class="sticker">Le vrac CandyBeauty</span>
+        <h2 id="vracT" style="margin-top:.9rem">La bonne portion pour <span class="hl-pink">goûter à tout</span></h2>
+        <ul class="formats">
+          <li>${icon("m-bag")}<span><strong>Sachets de 100 g</strong><span>Le format de la plupart des bonbons en vrac (quelques-uns en 50 g).</span></span></li>
+          <li>${icon("m-wrapper")}<span><strong>Lots à la pièce</strong><span>Bandeaux, chocolats et douceurs emballées : x3, x5 ou x10.</span></span></li>
+          <li>${icon("m-box")}<span><strong>Box découverte</strong><span>Lisse, sucrée ou les deux : de 500 g à 3 kg.</span></span></li>
+        </ul>
+      </div>
+    </div>
+  </section>`;
+}
+
+let filt = { halal: false, veg: false, choco: false, dispo: false, sort: "reco" };
+function viewColl(id) {
+  const c = collById[id] || collById.tout;
+  const list = applyFilters(P.filter(c.f));
+  const tog = (k, label) => `<button class="chip" type="button" data-filt="${k}" aria-pressed="${filt[k]}">${label}</button>`;
+  return `<section class="coll-hero">
+    ${floaters([["m-wrapper-y", 50, "left:4%", "40%", 0], ["m-sparkle", 22, "right:8%", "30%", 1], ["m-wrapper-y", 36, "right:20%", "75%", 2, 1]])}
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Fil d’Ariane"><a href="#accueil">Accueil</a><span aria-hidden="true">/</span><span aria-current="page">${c.label}</span></nav>
+      <h1>${c.label}</h1><p>${c.desc}</p>
+      <nav class="chips" aria-label="Rayons">${COLLS.map(x => `<a class="chip" href="${collHref(x)}" ${x.id === c.id ? 'aria-current="page"' : ""}>${x.short || x.label}</a>`).join("")}</nav>
+    </div>
+  </section>
+  ${curve("c-hot", true)}
+  <section class="wrap">
+    <div class="toolbar">
+      <div class="chips" role="group" aria-label="Filtres">${tog("halal", "Halal")}${tog("veg", "🌱 Végétal")}${tog("choco", "Chocolat")}${tog("dispo", "Disponibles")}</div>
+      <label class="sort" for="sort">Trier par <select id="sort">
+        <option value="reco" ${filt.sort === "reco" ? "selected" : ""}>Disponibles d’abord</option>
+        <option value="asc" ${filt.sort === "asc" ? "selected" : ""}>Prix croissant</option>
+        <option value="desc" ${filt.sort === "desc" ? "selected" : ""}>Prix décroissant</option>
+        <option value="az" ${filt.sort === "az" ? "selected" : ""}>Alphabétique, de A à Z</option></select></label>
+      <p class="result-count" aria-live="polite">${list.length} produit${list.length > 1 ? "s" : ""}</p>
+    </div>
+    ${list.length ? `<div class="grid">${list.map(card).join("")}</div>` : `<div class="empty"><svg><use href="#m-wrapper"/></svg><p style="font-family:var(--display);font-size:1.4rem">Aucun produit avec ces filtres.</p><button class="btn btn-line" type="button" id="resetF">Retirer les filtres</button></div>`}
+    <p class="note">${icon("i-info")}<span>Maquette : échantillon de ${P.length} produits réels de la boutique (sur environ 120 en ligne). Textures, halal et 🌱 sont déduits du nom et de la fiche de chaque produit.</span></p>
+  </section>`;
+}
+function applyFilters(list) {
+  let l = list.filter(p => (!filt.halal || p.halal) && (!filt.veg || p.veg) && (!filt.choco || p.choco) && (!filt.dispo || p.avail));
+  const s = filt.sort;
+  if (s === "asc") l.sort((a, b) => a.min - b.min);
+  else if (s === "desc") l.sort((a, b) => b.min - a.min);
+  else if (s === "az") l.sort((a, b) => a.name.localeCompare(b.name, "fr"));
+  else l.sort((a, b) => b.avail - a.avail);
+  return l;
+}
+document.addEventListener("click", e => {
+  const f = e.target.closest("[data-filt]"); if (f) { filt[f.dataset.filt] = !filt[f.dataset.filt]; rerender(`[data-filt="${f.dataset.filt}"]`); }
+  if (e.target.id === "resetF") { filt = { ...filt, halal: false, veg: false, choco: false, dispo: false }; rerender(); }
+});
+document.addEventListener("change", e => { if (e.target.id === "sort") { filt.sort = e.target.value; rerender("#sort"); } if (e.target.name === "boxw") updBox(); if (e.target.name === "variant") updVariant(); });
+function rerender(focusSel) { const y = scrollY; render(false); scrollTo(0, y); if (focusSel) { const el = $(focusSel); if (el) el.focus(); } }
+
+let cur = { h: null, vi: 0, q: 1 };
+function viewProduct(h) {
+  const p = byH[h]; if (!p) return viewColl("tout");
+  cur = { h, vi: Math.max(0, p.v.findIndex(v => v.a)), q: 1 };
+  const coll = p.box ? collById.box : p.bijou ? collById.bijoux : p.suedois ? collById.suedois : p.lisse ? collById.lisses : p.sucre ? collById.sucres : p.halal ? collById.halal : collById.tout;
+  const sibs = P.filter(x => coll.f(x)).slice(0, 12);
+  const related = P.filter(x => x.h !== h && x.avail && (coll.f(x) || (p.halal && x.halal))).slice(0, 4);
+  const ingr = p.d ? esc(p.d).replace(/^(Ingr[ée]dients?\s*:\s*)/i, "") : "";
+  const fmt = fmtLine(p, cur.vi).split(" · ");
+  return `<section class="wrap" style="padding-top:.5rem">
+    <nav class="crumbs small" aria-label="Fil d’Ariane" style="padding-block:.6rem 1rem"><a href="#accueil">Accueil</a><span aria-hidden="true">/</span><a href="${collHref(coll)}">${coll.label}</a><span aria-hidden="true">/</span><span aria-current="page">${esc(p.name)}</span></nav>
+    <div class="pdp">
+      <div class="gal">
+        <div class="main" style="--tint:${p.tint}"><img src="${p.img}" alt="${esc(p.alt)}" width="348" height="348">${badges(p)}</div>
+        <div class="sub zoom"><img src="${p.img}" alt="" aria-hidden="true"></div>
+        <div class="sub txt"><span>${esc(fmt[0])}<small>${esc(fmt[1] || "")}</small></span></div>
+      </div>
+      <div class="panel">
+        <div style="display:grid;gap:.6rem">
+          <p class="small">${coll.label}</p>
+          <h1>${esc(p.name)}</h1>
+          <p class="stock ${p.avail ? "" : "out"}">${p.avail ? "Disponible" : "Épuisé pour le moment"}</p>
+        </div>
+        <div class="steps">
+          ${sibs.length > 1 ? `<div class="step"><h2><span class="step-n">1</span>Choisis ton bonbon</h2><div class="sibs">${sibs.map(s => `<a class="sib" href="#produit-${s.h}" ${s.h === h ? 'aria-current="page"' : ""}><img loading="lazy" src="${s.img}" alt="">${esc(s.name)}</a>`).join("")}</div></div>` : ""}
+          <div class="step"><h2><span class="step-n">${sibs.length > 1 ? 2 : 1}</span>${p.multi ? "Choisis le poids" : "Choisis la quantité"}</h2>
+            ${p.multi ? `<fieldset class="seg" style="margin-bottom:.8rem"><legend class="sr">Poids</legend>${p.v.map((v, i) => `<label><input type="radio" name="variant" value="${i}" ${i === cur.vi ? "checked" : ""} ${v.a ? "" : "disabled"}><span style="border-color:var(--line)">${wlab(v.t)}</span></label>`).join("")}</fieldset>` : ""}
+            <div class="qty" role="group" aria-label="Quantité"><button type="button" id="qMinus" aria-label="Diminuer la quantité" ${p.avail ? "" : "disabled"}>${icon("i-minus", "ico")}</button><output id="qVal" aria-live="polite">1</output><button type="button" id="qPlus" aria-label="Augmenter la quantité" ${p.avail ? "" : "disabled"}>${icon("i-plus", "ico")}</button></div>
+          </div>
+        </div>
+        <div id="buyRow">
+          <button class="buybtn" type="button" id="pAdd" ${p.avail ? "" : "disabled"}><span>${p.avail ? "Ajouter au panier" : "Épuisé"}</span><span id="pPrice">${eur(p.v[cur.vi].p)}</span></button>
+          <p class="perkg" id="pUnit">${esc(fmt[1] || "")}${p.v[cur.vi].c ? ` · au lieu de ${eur(p.v[cur.vi].c)}` : ""}</p>
+          ${!p.avail ? `<p class="small" style="margin-top:.5rem"><span class="tag-idea" style="font-size:.6rem">Idée</span> bouton « Me prévenir du retour en stock »</p>` : ""}
+        </div>
+        <ul class="perks">
+          <li>${icon("i-pin")}Point relais Mondial Relay : 4,99 €</li>
+          <li>${icon("i-clock")}Commande traitée sous 4 jours ouvrables</li>
+          <li>${icon("i-mail")}Numéro de suivi envoyé par e-mail</li>
+          <li>${icon("i-card")}Taxes incluses, paiement CB, PayPal, Apple Pay, Klarna</li>
+        </ul>
+      </div>
+    </div>
+    <div class="recipe">
+      ${floaters([["m-wrapper-y", 50, "left:3%", "10%", 0], ["m-sparkle", 24, "right:4%", "18%", 1]])}
+      <h2>La recette</h2>
+      <div class="recipe-in">
+        <div class="recipe-card"><h3>${esc(p.name)}</h3><img loading="lazy" src="${p.img}" alt="">${badges(p).replace('class="badges"', 'class="badges" style="position:static"')}</div>
+        <div class="recipe-txt"><h3>Liste des ingrédients</h3><p>${ingr || "Information non renseignée sur la fiche actuelle."}</p><a class="src" href="${p.url}" target="_blank" rel="noopener">Voir la fiche actuelle sur candybeauty.org</a></div>
+      </div>
+    </div>
+    ${related.length ? `<div class="sec-title" style="margin-top:3rem"><h2>Tu aimeras aussi…</h2></div><div class="grid">${related.map(card).join("")}</div>` : ""}
+  </section>`;
+}
+function updVariant() {
+  const p = byH[cur.h], i = +$("input[name=variant]:checked").value; cur.vi = i;
+  $("#pPrice").textContent = eur(p.v[i].p); $("#pUnit").textContent = fmtLine(p, i).split(" · ")[1] || ""; renderBuybar();
+}
+function updBox() {
+  const b = byH["box-lisse-sucree-500g"], i = +$("input[name=boxw]:checked").value;
+  $("#boxPrice").textContent = eur(b.v[i].p); $("#boxUnit").textContent = fmtLine(b, i).split(" · ")[1] || "";
+}
+document.addEventListener("click", e => {
+  const id = e.target.closest("button")?.id;
+  if (id === "qPlus" || id === "qMinus") { cur.q = Math.max(1, Math.min(99, cur.q + (id === "qPlus" ? 1 : -1))); $("#qVal").textContent = cur.q; }
+  if (id === "pAdd" || id === "bbAdd") addToCart(cur.h, cur.vi, cur.q);
+  if (id === "boxAdd") addToCart("box-lisse-sucree-500g", +$("input[name=boxw]:checked").value);
+});
+let io;
+function renderBuybar() {
+  const bb = $("#buybar"), p = byH[cur.h]; if (!p) return;
+  bb.innerHTML = `<span class="bb-name">${esc(p.name)}</span><button class="buybtn" type="button" id="bbAdd" ${p.avail ? "" : "disabled"}><span>${p.avail ? "Ajouter" : "Épuisé"}</span><span>${eur(p.v[cur.vi].p)}</span></button>`;
+}
+
+/* Assortiment (proposition) */
+let mix = {};
+function viewMix() {
+  const list = P.filter(p => p.g === 100 && p.avail);
+  return `<section class="coll-hero"><div class="wrap">
+      <nav class="crumbs" aria-label="Fil d’Ariane"><a href="#accueil">Accueil</a><span aria-hidden="true">/</span><span aria-current="page">Composer mon assortiment</span></nav>
+      <span class="tag-idea" style="background:var(--lemon);color:var(--ink)">Proposition · n’existe pas encore sur la boutique</span>
+      <h1>Compose ton assortiment</h1><p>Choisis tes sachets de 100 g, regarde le bocal se remplir, puis ajoute tout au panier en un geste. Les prix sont ceux de la boutique, sans remise inventée.</p>
+    </div></section>
+    ${curve("c-hot", true)}
+    <section class="wrap" style="padding-top:1rem">
+    <div class="builder">
+      <div class="pickgrid">${list.map(p => `<div class="pk" id="pk-${p.h}" style="--tint:${p.tint}"><img loading="lazy" src="${p.img}" alt="${esc(p.alt)}"><div class="pk-b"><strong>${esc(p.name)}</strong><span class="small">${eur(p.v[0].p)} · 100 g</span>
+        <div class="qty" role="group" aria-label="Sachets de ${esc(p.name)}"><button type="button" data-mix="-1" data-h="${p.h}" aria-label="Retirer un sachet">${icon("i-minus", "ico")}</button><span id="mq-${p.h}">0</span><button type="button" data-mix="1" data-h="${p.h}" aria-label="Ajouter un sachet">${icon("i-plus", "ico")}</button></div></div></div>`).join("")}</div>
+      <aside class="summary" aria-labelledby="sumT"><h2 id="sumT">Mon bocal</h2><div class="jar" id="jar"></div>
+        <div class="sum-line"><span id="mixN">0 sachet</span><span id="mixW">0 g</span></div><div class="sum-line" style="font-size:1.5rem"><span>Total</span><span id="mixT">${eur(0)}</span></div>
+        <button class="btn btn-lemon" type="button" id="mixAdd" disabled>Ajouter au panier</button></aside>
+    </div></section>`;
+}
+function renderMix() {
+  let n = 0, t = 0, imgs = "";
+  for (const [h, q] of Object.entries(mix)) { const p = byH[h]; n += q; t += q * p.v[0].p; for (let i = 0; i < q; i++) imgs += `<img src="${p.img}" alt="">`; }
+  P.forEach(p => { const el = $("#mq-" + p.h); if (el) { el.textContent = mix[p.h] || 0; $("#pk-" + p.h).classList.toggle("on", !!mix[p.h]); } });
+  $("#jar").innerHTML = imgs || `<p>Ton bocal est vide. Ajoute un premier sachet.</p>`;
+  $("#mixN").textContent = `${n} sachet${n > 1 ? "s" : ""}`; $("#mixW").textContent = n >= 10 ? (n / 10).toString().replace(".", ",") + " kg" : n * 100 + " g";
+  $("#mixT").textContent = eur(t); $("#mixAdd").disabled = !n;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-mix]");
+  if (b) { const h = b.dataset.h; mix[h] = Math.max(0, (mix[h] || 0) + +b.dataset.mix); if (!mix[h]) delete mix[h]; renderMix(); }
+  if (e.target.id === "mixAdd") { for (const [h, q] of Object.entries(mix)) addToCart(h, 0, q, true); mix = {}; renderMix(); openPanel("cart"); }
+});
+
+/* ---------- Routeur ---------- */
+function route() {
+  const h = location.hash.slice(1);
+  if (h.startsWith("produit-")) return { v: "product", id: h.slice(8) };
+  if (h === "boutique") return { v: "coll", id: "tout" };
+  if (h.startsWith("boutique-")) return { v: "coll", id: h.slice(9) };
+  if (h === "assortiment") return { v: "mix" };
+  return { v: "home" };
+}
+function render(scrollTop = true) {
+  const r = route(), main = $("#main");
+  main.innerHTML = `<div class="view">${r.v === "product" ? viewProduct(r.id) : r.v === "coll" ? viewColl(r.id) : r.v === "mix" ? viewMix() : viewHome()}</div>`;
+  if (!scrollTop) main.firstElementChild.classList.remove("view");
+  document.body.classList.toggle("pdp-open", r.v === "product");
+  if (r.v === "mix") renderMix();
+  const bb = $("#buybar"); if (io) io.disconnect(); bb.classList.remove("show");
+  if (r.v === "product") {
+    renderBuybar();
+    io = new IntersectionObserver(([en]) => bb.classList.toggle("show", !en.isIntersecting && en.boundingClientRect.top < 0), { threshold: 0 });
+    io.observe($("#buyRow"));
+  }
+  if (scrollTop) { scrollTo({ top: 0, behavior: "instant" }); main.focus({ preventScroll: true }); }
+  const c = r.v === "coll" ? collById[r.id] : null;
+  document.title = r.v === "product" && byH[r.id] ? `${byH[r.id].name} · CandyBeauty Refonte V2` : c ? `${c.label} · CandyBeauty Refonte V2` : "CandyBeauty Refonte V2";
+}
+addEventListener("hashchange", () => { closePanel(true); closeMega(); render(); });
+
+/* ---------- Navigation, animations ---------- */
+const navColls = COLLS.filter(c => c.id !== "tout");
+$("#menuList").innerHTML = [collById.tout, ...navColls].map((c, i) => `<li><a href="${collHref(c)}" style="--tint:var(${TINTS[i % TINTS.length]})"><img src="img/${c.img}.jpg" alt="">${c.label}</a></li>`).join("");
+$("#footCols").innerHTML = COLLS.map(c => `<li><a href="${collHref(c)}">${c.label}</a></li>`).join("") + `<li><a href="#assortiment">Composer mon assortiment</a></li>`;
+
+const mq = matchMedia("(prefers-reduced-motion: reduce)");
+let userReduce = store.get("cb-reduce", null);
+const reduced = () => userReduce ?? mq.matches;
+function applyMotion() {
+  document.documentElement.classList.toggle("reduce", reduced());
+  ["#motionToggle", "#motionToggle2"].forEach(s => { const b = $(s); b.setAttribute("aria-pressed", reduced()); b.textContent = reduced() ? "Réactiver les animations" : "Réduire les animations"; });
+}
+const toggleMotion = () => { userReduce = !reduced(); store.set("cb-reduce", userReduce); applyMotion(); };
+$("#motionToggle").onclick = toggleMotion; $("#motionToggle2").onclick = toggleMotion;
+mq.addEventListener?.("change", applyMotion);
+
+renderCount(); renderCart(); renderSearch(); applyMotion(); render(false);
+})();
+</script>
+
+</body>
+</html>
