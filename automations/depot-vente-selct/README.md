@@ -28,7 +28,7 @@ Aperçu des e-mails : [`apercu-emails.html`](apercu-emails.html) (données ficti
    Paramètres du projet (⚙️) → cocher « Afficher le fichier manifeste appsscript.json » → coller `appsscript.json`.
 3. **Compléter en haut de `Code.gs`** :
    - `CONFIG.EMAIL_EQUIPE` : l'adresse qui reçoit les demandes ;
-   - `PROCEDURE` : vos vraies conditions (modalités de dépôt, prix, durée, commission, paiement, invendus).
+   - `PROCEDURE` : déjà rempli avec vos conditions (envoi par colis à Oberhausbergen ou via Vinted/Mondial Relay, estimation par SEL-CT, 90 jours renouvelables, commission 20 %, paiement sur demande, retour des invendus). `ENVOI_VINTED_ACTIF: false` retire l'option Vinted de l'e-mail.
      Tant qu'un champ contient `[À COMPLÉTER`, **l'approbation est bloquée** : aucun e-mail incomplet ne peut partir.
    - facultatif : `LOGO_URL` (URL du logo officiel, ex. celui du CDN Shopify), `EMAIL_REPONSE`, `LIEN_CONTRAT`.
 4. **Exécuter `installer`** (menu déroulant des fonctions → ▶ Exécuter) et accepter les autorisations Google.

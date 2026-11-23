@@ -75,9 +75,9 @@ function charger(code) {
 let ok = 0;
 const t = (nom, fn) => { fn(); ok++; console.log('✓ ' + nom); };
 
-// A. Fichier livré : procédure non remplie → l'approbation est bloquée
+// A. Un champ de procédure non rempli → l'approbation est bloquée
 {
-  const w = charger(cfgTest);
+  const w = charger(cfgTest.replace(/DUREE_DEPOT: '[^']*'/, "DUREE_DEPOT: '[À COMPLÉTER]'"));
   const ref = w.enregistrerDemande_({ 'Prénom': 'Léa', 'Nom': 'Martin', 'Adresse e-mail': 'lea@exemple.fr', 'Articles': 'Veste' }, 'Test');
   t('procédure incomplète → approbation refusée sans e-mail', () => {
     const avant = w.envoyes.length;
@@ -205,8 +205,7 @@ fs.writeFileSync(path.join(DIR, 'apercu-emails.html'),
   `h1{font-size:22px}h2{font-size:16px;margin:28px 0 4px}.s{margin:0 0 8px;font-size:14px;color:#555}` +
   `iframe{width:100%;max-width:640px;height:820px;border:1px solid #CFC6B8;border-radius:6px;background:#fff;display:block}` +
   `.n{background:#FFF7E0;border:1px solid #E8D9A8;padding:10px 12px;border-radius:4px;font-size:14px;max-width:616px}</style></head><body>` +
-  `<h1>SEL-CT Wear — aperçu des e-mails de dépôt-vente</h1><p class="n">Données fictives. Les textes « (exemple) … » de la procédure ` +
-  `sont à remplacer par vos vraies conditions dans <code>PROCEDURE</code> (Code.gs).</p>${blocs}</body></html>`);
+  `<h1>SEL-CT Wear — aperçu des e-mails de dépôt-vente</h1><p class="n">Déposants fictifs ; procédure = conditions réelles saisies dans <code>PROCEDURE</code> (Code.gs).</p>${blocs}</body></html>`);
 
 void page;
 console.log(`\n${ok} vérifications réussies — aperçu : automations/depot-vente-selct/apercu-emails.html`);

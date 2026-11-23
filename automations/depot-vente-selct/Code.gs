@@ -32,17 +32,26 @@ const CONFIG = {
 // Contenu de la procédure envoyée après approbation.
 // Tant qu'un champ contient « [À COMPLÉTER », l'approbation est bloquée (aucun e-mail incomplet ne part).
 const PROCEDURE = {
-  MODALITES_DEPOT: '[À COMPLÉTER — adresse et horaires de dépôt en boutique, et/ou adresse d’envoi par colis]',
-  PRIX: '[À COMPLÉTER — comment le prix de vente est fixé (par SEL-CT Wear, en accord avec vous…)]',
-  DUREE_DEPOT: '[À COMPLÉTER — ex. « 3 mois »]',
-  COMMISSION: '[À COMPLÉTER — ex. « vous percevez X % du prix de vente »]',
-  PAIEMENT: '[À COMPLÉTER — délai et moyen de reversement (virement…)]',
-  INVENDUS: '[À COMPLÉTER — ce qu’il advient des articles non vendus à la fin du dépôt]',
+  MODALITES_DEPOT: 'Pas de dépôt sur place : vos articles nous sont confiés par colis, au choix de l’une des deux options ci-dessous.',
+  ADRESSE_ENVOI: ['SEL-CT Wear', '35 rue des Vignes', '67205 Oberhausbergen'],
+  ENVOI_VINTED_ACTIF: true,            // false = l'option Vinted / Mondial Relay disparaît de l'e-mail
+  ENVOI_VINTED_ETAPES: [
+    'Notre profil Vinted est @selctwear (profil professionnel).',
+    'Vous créez sur Vinted un article à 1 €.',
+    'Nous achetons cet article : Vinted génère un bordereau d’envoi Mondial Relay vers un point relais proche de chez nous.',
+    'Vous annulez ensuite la commande : le bordereau, déjà généré, reste actif.',
+    'Vous déposez votre colis en point relais Mondial Relay avec ce bordereau.',
+  ],
+  PRIX: 'Nous estimons chacun de vos articles et fixons son prix de vente.',
+  DUREE_DEPOT: '90 jours, renouvelable',
+  COMMISSION: 'Notre commission est de 20 % du prix de vente : vous percevez donc 80 % du prix de chaque pièce vendue.',
+  PAIEMENT: 'Dès qu’une de vos pièces est vendue, vous pouvez nous faire une demande de paiement, simplement en répondant à cet e-mail.',
+  INVENDUS: 'Au terme des 90 jours, sans renouvellement de votre part, les articles non vendus vous sont renvoyés.',
   PREPARATION: [                       // liste modifiable
     'Articles propres, lavés et défroissés.',
     'Étiquettes de marque, de taille et de composition conservées autant que possible.',
     'Défauts éventuels (tache, accroc, bouloche…) signalés à l’avance.',
-    'Indiquez votre référence de demande avec vos articles (papier dans le colis ou à l’accueil).',
+    'Glissez dans le colis un papier avec votre nom et votre référence de demande.',
   ],
   LIEN_CONTRAT: '',                    // facultatif : lien vers le contrat / les conditions de dépôt-vente
 };
@@ -387,9 +396,18 @@ function envoyerProcedure_(d, message) {
     '<table cellpadding="0" cellspacing="0" width="100%">' +
     etape(1, 'Préparez vos articles', '<ul style="margin:6px 0 0;padding-left:18px">' +
       P.PREPARATION.map(function (x) { return '<li>' + esc_(x) + '</li>'; }).join('') + '</ul>') +
-    etape(2, 'Déposez ou envoyez-les', nl2br_(esc_(P.MODALITES_DEPOT)) +
-      '<br>Indiquez votre référence <b>' + esc_(d.ref) + '</b>.') +
-    etape(3, 'Mise en vente', nl2br_(esc_(P.PRIX)) + '<br>Durée du dépôt : ' + esc_(P.DUREE_DEPOT) + '.') +
+    etape(2, 'Envoyez-nous vos articles', nl2br_(esc_(P.MODALITES_DEPOT)) +
+      '<div style="margin:10px 0 0;padding:12px 14px;border:1px solid #E6DED1;border-radius:4px">' +
+      '<b>' + (P.ENVOI_VINTED_ACTIF ? 'Option 1 — ' : '') + 'Colis à notre adresse</b><br>' +
+      P.ADRESSE_ENVOI.map(esc_).join('<br>') + '</div>' +
+      (P.ENVOI_VINTED_ACTIF
+        ? '<div style="margin:10px 0 0;padding:12px 14px;border:1px solid #E6DED1;border-radius:4px">' +
+          '<b>Option 2 — Via Vinted et Mondial Relay</b>' +
+          '<ol style="margin:6px 0 0;padding-left:20px">' +
+          P.ENVOI_VINTED_ETAPES.map(function (x) { return '<li>' + esc_(x) + '</li>'; }).join('') + '</ol></div>'
+        : '') +
+      '<p style="margin:10px 0 0">Référence à indiquer : <b>' + esc_(d.ref) + '</b>.</p>') +
+    etape(3, 'Mise en vente', nl2br_(esc_(P.PRIX)) + '<br>Durée du dépôt : <b>' + esc_(P.DUREE_DEPOT) + '</b>.') +
     etape(4, 'Votre rémunération', nl2br_(esc_(P.COMMISSION)) + '<br>' + nl2br_(esc_(P.PAIEMENT))) +
     etape(5, 'Articles non vendus', nl2br_(esc_(P.INVENDUS))) +
     '</table>' +
